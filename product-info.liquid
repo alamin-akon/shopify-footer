@@ -1,0 +1,870 @@
+{% schema %}
+{
+  "name": "Ultimate Product",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Size Finder Content"
+    },
+    {
+      "type": "text",
+      "id": "size_guide_url",
+      "label": "Size Guide PDF Link",
+      "default": "https://cdn.shopify.com/s/files/1/0992/8697/4812/files/Global_Ring_Size_Conversion_Chart.pdf?v=1769659125",
+      "info": "Paste PDF URL here. It will show inside the popup."
+    },
+    {
+      "type": "image_picker",
+      "id": "size_chart_image",
+      "label": "Size Guide Illustration (Fallback)"
+    },
+    {
+      "type": "richtext",
+      "id": "size_finder_intro",
+      "label": "Size Finder Intro Text",
+      "default": "<p>Vind jouw ideale maat. Deze maattabel is gebaseerd op metingen van het kledingstuk zelf.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Trust Indicators"
+    },
+    {
+      "type": "text",
+      "id": "trust_text",
+      "label": "Trust Badge Text",
+      "default": "Over 500,000+ satisfied customers"
+    },
+    {
+      "type": "text",
+      "id": "value_prop_text",
+      "label": "Value Proposition Text",
+      "default": "Unmatched value for money"
+    },
+    {
+      "type": "header",
+      "content": "Accordion Defaults"
+    },
+    {
+      "type": "richtext",
+      "id": "shipping_info",
+      "label": "Shipping Info Content",
+      "default": "<p>Standard shipping takes 3-5 business days.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "returns_info",
+      "label": "Returns Info Content",
+      "default": "<p>We offer a 14 day return or exchange policy if you are not happy with your order.</p>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ultimate Product"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  :root {
+    --hqi-primary-black: #111111;
+    --hqi-border-light: #eeeeee;
+    --hqi-accent-teal: #1a514e;
+    --hqi-star-green: #00b67a;
+  }
+
+  .hqi-pdp-{{ section.id }} {
+    max-width: 1420px;
+    margin: 0 auto;
+    padding: {{ section.settings.padding_top }}px 20px {{ section.settings.padding_bottom }}px;
+    font-family: inherit;
+  }
+
+  .hqi-pdp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+  }
+
+  @media (max-width: 1024px) {
+    .hqi-pdp-grid { grid-template-columns: 1fr; gap: 40px; }
+  }
+
+/* --- GALLERY STYLES (FIXED) --- */
+.hqi-gallery-main {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1/1;
+  overflow: hidden;
+  border: 1px solid #f0f0f0;
+  margin-bottom: 10px;
+  display: flex; /* ইমেজ সেন্টারে রাখবে */
+  align-items: center;
+  justify-content: center;
+}
+.hqi-gallery-main img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.hqi-slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 35px; 
+  height: 35px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  display: flex; align-items: center; justify-content: center;
+}
+.hqi-prev { left: 10px; }
+.hqi-next { right: 10px; }
+
+/* THUMBNAILS FIX */
+.hqi-gallery-thumbs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.hqi-gallery-thumb {
+  width: 60px; /* ফিক্সড ছোট সাইজ */
+  height: 60px;
+  border: 1px solid #eee;
+  padding: 3px;
+  cursor: pointer;
+}
+.hqi-gallery-thumb.active { border-color: #000; }
+.hqi-gallery-thumb img { width: 100%; height: 100%; object-fit: contain; }
+.hqi-gallery-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* --- PART 2: DROPDOWN & SIZE FINDER STYLES --- */
+.hqi-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.hqi-option-label {
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  margin: 0;
+}
+.hqi-size-finder-btn {
+  font-size: 12px;
+  text-decoration: underline;
+  cursor: pointer;
+  color: #555;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 600;
+}
+.hqi-size-finder-btn svg { width: 14px; height: 14px; }
+.hqi-size-finder-btn:hover { color: #000; }
+
+/* Dropdown Styles (Keep as matches previous) */
+.hqi-custom-select-wrapper { position: relative; width: 100%; margin-bottom: 20px; }
+.hqi-custom-select-trigger {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 15px; font-size: 14px; border: 1px solid #e0e0e0; cursor: pointer;
+}
+.hqi-custom-options {
+  position: absolute; top: 100%; left: 0; right: 0;
+  border: 1px solid #e0e0e0; border-top: 0; background: #fff;
+  z-index: 20; max-height: 200px; overflow-y: auto;
+  display: none; /* Default hidden */
+}
+.hqi-custom-select-wrapper.open .hqi-custom-options { display: block; }
+.hqi-custom-option { padding: 10px 15px; cursor: pointer; font-size: 14px; display: block;}
+.hqi-custom-option:hover { background-color: #f5f5f5; }
+.hqi-custom-option.selected { font-weight: bold; background-color: #f0f0f0; }
+
+
+/* --- PART 3: PRICE STYLES --- */
+.hqi-price-container { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+.hqi-compare-price { text-decoration: line-through; color: #888; font-size: 18px; }
+.hqi-current-price { color: #ff5c39; font-size: 24px; font-weight: 700; }
+.hqi-save-badge {
+  background-color: #00b67a; /* Green Color */
+  color: white;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 800;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
+  /* Info Column Styling */
+  .hqi-info-col { display: flex; flex-direction: column; }
+
+  .hqi-trust-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+  .hqi-stars { display: flex; color: var(--hqi-star-green); gap: 2px; }
+  .hqi-stars svg { width: 18px; height: 18px; fill: currentColor; }
+  .hqi-trust-text { font-size: 12px; color: #666; font-weight: 500; }
+
+  .hqi-product-title {
+    font-size: 27px;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin: 0 0 10px 0;
+    line-height: 1.4;
+    letter-spacing: -0.5px;
+  }
+
+  .hqi-product-price { font-size: 24px; font-weight: 700; margin-bottom: 25px; }
+
+  .hqi-option-label { font-size: 11px; font-weight: 700; text-transform: uppercase; margin-bottom: 12px; display: block; }
+  
+  .hqi-swatches { display: flex; gap: 12px; margin-bottom: 30px; }
+  .hqi-swatch {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    position: relative;
+    padding: 3px;
+    transition: all 0.2s;
+  }
+  .hqi-swatch.active { border: 2px solid var(--hqi-primary-black); padding: 2px; }
+  .hqi-swatch-inner { width: 100%; height: 100%; border-radius: 50%; }
+
+  .hqi-size-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  
+  /* SIZE FINDER LINK STYLE */
+  .hqi-size-finder-btn { 
+    font-size: 12px; 
+    text-decoration: underline; 
+    cursor: pointer; 
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: inherit; 
+  }
+
+  .hqi-sizes { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 30px; }
+  .hqi-size-btn {
+    border: 1px solid #ddd;
+    padding: 12px 0;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #fff;
+    border-radius: 4px;
+  }
+  .hqi-size-btn:hover { border-color: #999; }
+  .hqi-size-btn.active { border-color: var(--hqi-primary-black); background: #fafafa; }
+
+  .hqi-value-prop { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; margin-bottom: 25px; }
+
+  /* ADD TO CART BUTTON STYLES */
+  .add-to-cart-button.hqi-atc-btn,
+  .hqi-atc-btn {
+    background: var(--hqi-primary-black);
+    color: white;
+    width: 100%;
+    padding: 18px;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 1px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .add-to-cart-button.hqi-atc-btn:hover,
+  .hqi-atc-btn:hover { opacity: 0.9; }
+  
+  /* Accordion Styling */
+  .hqi-accordion { border-top: 1px solid var(--hqi-border-light); }
+  .hqi-accordion-item { border-bottom: 1px solid var(--hqi-border-light); }
+  .hqi-accordion-header {
+    width: 100%;
+    padding: 18px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background: none;
+    border: none;
+  }
+  .hqi-accordion-content { max-height: 0; overflow: hidden; transition: all 0.3s ease; font-size: 14px; line-height: 1.6; color: #555; }
+  .hqi-accordion-content.open { max-height: 800px; padding-bottom: 20px; }
+  .hqi-accordion-icon { transition: transform 0.3s; width: 14px; height: 14px; }
+  
+  /* FIXED: CSS selector for rotation */
+  .hqi-accordion-header.active .hqi-accordion-icon { transform: rotate(180deg); }
+
+  /* Modal Styling */
+  .hqi-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(4px);
+    z-index: 999999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+  .hqi-modal-overlay.active { display: flex; }
+  .hqi-modal {
+    background: white;
+    width: 90%;
+    max-width: 900px; /* Wider for PDF */
+    height: 80vh; /* Fixed height for PDF */
+    max-height: 90vh;
+    padding: 0; 
+    position: relative;
+    border-radius: 4px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+  }
+  .hqi-modal-close { 
+    position: absolute; 
+    top: 15px; 
+    right: 15px; 
+    cursor: pointer; 
+    z-index: 10;
+    background: white;
+    border-radius: 50%;
+    padding: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  .hqi-modal-header {
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+  }
+  .hqi-modal-title { font-size: 20px; font-weight: 800; text-transform: uppercase; margin: 0; }
+  
+  .hqi-modal-content {
+    flex: 1;
+    overflow-y: auto;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+  }
+  
+  /* Fallback table styles */
+  .hqi-size-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; font-size: 13px; }
+  .hqi-size-table th, .hqi-size-table td { border: 1px solid #ddd; padding: 12px; text-align: center; }
+  .hqi-size-table th { background: #f9f9f9; font-weight: 800; text-transform: uppercase; }
+  .hqi-size-diagram { max-width: 400px; margin: 0 auto; display: block; }
+  
+  /* PDF Iframe */
+  .hqi-pdf-frame {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+  .hqi-badge-bestseller{
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 20;
+  background: #111;
+  color: #fff;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  border-radius: 999px;
+  line-height: 1;
+}
+
+</style>
+
+
+
+<div class="hqi-pdp-{{ section.id }}">
+  <div class="hqi-pdp-grid">
+    
+    <div class="hqi-gallery-col">
+      <div class="hqi-gallery-main">
+        <div class="hqi-badge-bestseller">Bestseller</div>
+
+        <div class="hqi-slider-btn hqi-prev" onclick="changeSlide(-1)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        </div>
+
+        <img id="main-product-img" src="{{ product.featured_image | image_url: width: 1200 }}" data-index="0" alt="{{ product.title }}">
+
+        <div class="hqi-slider-btn hqi-next" onclick="changeSlide(1)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+      </div>
+
+   <div class="hqi-gallery-thumbs">
+  {% for image in product.images %}
+    <div class="hqi-gallery-thumb {% if forloop.first %}active{% endif %}" onclick="goToSlide({{ forloop.index0 }})">
+      <img src="{{ image | image_url: width: 200 }}" alt="{{ product.title }}">
+    </div>
+  {% endfor %}
+</div>
+
+
+      <script>
+        window.productImages = [
+          {% for image in product.images %}
+            "{{ image | image_url: width: 1200 }}"{% unless forloop.last %},{% endunless %}
+          {% endfor %}
+        ];
+      </script>
+   
+    </div>
+
+    <div class="hqi-info-col">
+      <div class="hqi-trust-bar">
+        <div class="hqi-stars">
+          {% for i in (1..5) %}
+            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+          {% endfor %}
+        </div>
+        <span class="hqi-trust-text">{{ section.settings.trust_text }}</span>
+      </div>
+
+      <h1 class="hqi-product-title">{{ product.title | default: "Santoni Quarter Zip Sweater" }}</h1>
+      
+      <div class="hqi-price-container">
+        {% assign current_variant = product.selected_or_first_available_variant %}
+        {% if current_variant.compare_at_price > current_variant.price %}
+          <span class="hqi-compare-price">{{ current_variant.compare_at_price | money }}</span>
+          <span class="hqi-current-price">{{ current_variant.price | money }}</span>
+          <span class="hqi-save-badge">SAVE {{ current_variant.compare_at_price | minus: current_variant.price | money }}</span>
+        {% else %}
+          <span class="hqi-current-price" style="color:#000;">{{ current_variant.price | money }}</span>
+        {% endif %}
+      </div>
+
+      {%- unless product.has_only_default_variant -%}
+        <div class="hqi-variant-picker">
+          {%- for option in product.options_with_values -%}
+            {%- assign option_name = option.name | downcase -%}
+            
+            <div class="hqi-label-row">
+              <label class="hqi-option-label">{{ option.name }}</label>
+              {% if option_name contains 'size' %}
+                <div class="hqi-size-finder-btn" onclick="window.openSizeModal()">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3zM3 9h18M3 15h18M9 3v18M15 3v18"/></svg>
+                  Size Finder
+                </div>
+              {% endif %}
+            </div>
+
+            {% if option_name contains 'size' %}
+              <div class="hqi-custom-select-wrapper">
+                <div class="hqi-custom-select-trigger" onclick="this.parentElement.classList.toggle('open')">
+                  <span id="selected-size-display">{{ option.selected_value }}</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+                <div class="hqi-custom-options">
+                  {% for value in option.values %}
+                    <span class="hqi-custom-option {% if option.selected_value == value %}selected{% endif %}" 
+                          onclick="updateVariant('{{ value }}', this)">
+                      {{ value }}
+                    </span>
+                  {% endfor %}
+                </div>
+              </div>
+            {% else %}
+              <div class="hqi-swatches">
+                 {% for value in option.values %}
+                   <div class="hqi-swatch {% if option.selected_value == value %}active{% endif %}">{{ value }}</div>
+                 {% endfor %}
+              </div>
+            {% endif %}
+          {%- endfor -%}
+        </div>
+        
+        <select name="id" id="ProductSelect-{{ section.id }}" style="display:none;">
+          {% for variant in product.variants %}
+            <option value="{{ variant.id }}" {% if variant == product.selected_or_first_available_variant %}selected="selected"{% endif %}>
+              {{ variant.title }}
+            </option>
+          {% endfor %}
+        </select>
+      {%- endunless -%}
+
+      <script type="application/json" id="ProductJson-{{ section.id }}">
+        {{ product.variants | json }}
+      </script>
+      <script type="application/json" id="ProductOptions-{{ section.id }}">
+        {{ product.options | json }}
+      </script>
+
+      <div class="hqi-value-prop">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        {{ section.settings.value_prop_text }}
+      </div>
+
+      <product-form-component class="product-form" data-section-id="{{ section.id }}">
+        <form method="post" action="/cart/add" id="product_form_{{ section.id }}" accept-charset="UTF-8" class="hqi-product-form" enctype="multipart/form-data" novalidate="novalidate">
+          <input type="hidden" name="form_type" value="product">
+          <input type="hidden" name="utf8" value="✓">
+          <input type="hidden" name="id" id="MasterVariantId-{{ section.id }}" value="{{ product.selected_or_first_available_variant.id }}" ref="variantId">
+          
+          {%- liquid
+             assign current_variant = product.selected_or_first_available_variant
+             assign add_to_cart_text = 'products.product.add_to_cart' | t
+             if current_variant.available
+               assign can_add_to_cart = true
+             else
+               assign can_add_to_cart = false
+               assign add_to_cart_text = 'products.product.sold_out' | t
+             endif
+          -%}
+
+          <div class="hqi-atc-wrapper">
+             <button type="submit" name="add" class="hqi-atc-btn" {% unless can_add_to_cart %}disabled{% endunless %}>
+               <span>{{ add_to_cart_text }}</span>
+             </button>
+          </div>
+
+          <p class="visually-hidden" ref="liveRegion" aria-live="polite"></p>
+          <div class="product-form__error-message-wrapper" role="alert" hidden></div>
+        </form>
+      </product-form-component>
+
+      <div class="hqi-accordion">
+        <div class="hqi-accordion-item">
+          <button class="hqi-accordion-header" onclick="toggleAccordion(this)">
+            Description
+            <svg class="hqi-accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="hqi-accordion-content">
+            {{ product.description | default: "Premium quarter-zip sweater crafted from the finest yarns for unmatched comfort and style." }}
+          </div>
+        </div>
+
+        <div class="hqi-accordion-item">
+          <button class="hqi-accordion-header" onclick="toggleAccordion(this)">
+            Shipping Info
+            <svg class="hqi-accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="hqi-accordion-content">
+            {{ section.settings.shipping_info }}
+          </div>
+        </div>
+
+        <div class="hqi-accordion-item">
+          <button class="hqi-accordion-header" onclick="toggleAccordion(this)">
+            30 Day Easy Returns
+            <svg class="hqi-accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="hqi-accordion-content">
+            {{ section.settings.returns_info }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="hqi-modal-overlay" id="hqiSizeModal">
+  <div class="hqi-modal">
+    <div class="hqi-modal-close" onclick="closeSizeModal()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </div>
+    
+    <div class="hqi-modal-header">
+      <h3 class="hqi-modal-title">Size Chart</h3>
+    </div>
+    
+    <div class="hqi-modal-content">
+      {% if section.settings.size_guide_url != blank %}
+        <iframe src="{{ section.settings.size_guide_url }}#toolbar=0&navpanes=0&scrollbar=0" class="hqi-pdf-frame"></iframe>
+      {% else %}
+        <div style="text-align: center; margin-bottom: 20px;">
+          {{ section.settings.size_finder_intro }}
+        </div>
+
+        <table class="hqi-size-table">
+          <thead>
+            <tr><th>Size</th><th>S</th><th>M</th><th>L</th><th>XL</th><th>XXL</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Chest (cm)</td><td>51</td><td>53</td><td>55</td><td>57</td><td>59</td></tr>
+            <tr><td>Waist (cm)</td><td>48</td><td>50</td><td>52</td><td>54</td><td>56</td></tr>
+            <tr><td>Length (cm)</td><td>66</td><td>68</td><td>70</td><td>72</td><td>74</td></tr>
+          </tbody>
+        </table>
+
+        {% if section.settings.size_chart_image != blank %}
+          <img src="{{ section.settings.size_chart_image | image_url: width: 800 }}" class="hqi-size-diagram" alt="Size Diagram">
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // --- ADD TO CART & DRAWER LOGIC ---
+  const productForm = document.getElementById('product_form_{{ section.id }}');
+  if (!productForm) return;
+
+  const atcBtn =
+    productForm.querySelector('.hqi-atc-btn') ||
+    productForm.querySelector('button[type="submit"]');
+
+  const toast = document.getElementById('hqiToast');
+  if (!atcBtn) return;
+
+  // Helpers
+  function showToast() {
+    if (!toast) return;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  async function getCartJSON() {
+    const res = await fetch(`${window.Shopify.routes.root}cart.js`, {
+      headers: { 'Accept': 'application/json' },
+      cache: 'no-store'
+    });
+    return res.json();
+  }
+
+  function updateHorizonBubbleCount(itemCount) {
+    const bubble = document.querySelector('.cart-bubble');
+    const countEl = document.querySelector('[data-testid="cart-bubble"]');
+
+    if (bubble) {
+      if (itemCount > 0) bubble.classList.remove('visually-hidden');
+      else bubble.classList.add('visually-hidden');
+    }
+
+    if (countEl) {
+      countEl.classList.toggle('hidden', itemCount === 0);
+      countEl.textContent = itemCount <= 99 ? String(itemCount) : '99+';
+    }
+  }
+
+  function findDrawerSectionId(drawerEl) {
+    if (!drawerEl) return null;
+    const direct = drawerEl.getAttribute('data-section-id') || drawerEl.dataset.sectionId;
+    if (direct) return direct;
+    const shopifySection = drawerEl.closest('.shopify-section[id^="shopify-section-"]');
+    if (shopifySection?.id) return shopifySection.id.replace('shopify-section-', '');
+    return null;
+  }
+
+  async function refreshAndOpenDrawer() {
+    const currentDrawer = document.querySelector('cart-drawer-component');
+    if (!currentDrawer) return;
+
+    const drawerSectionId = findDrawerSectionId(currentDrawer);
+    if (!drawerSectionId) {
+      console.warn('Drawer section id not found. Add data-section-id on <cart-drawer-component>.');
+      if (typeof currentDrawer.open === 'function') currentDrawer.open();
+      return;
+    }
+
+    const res = await fetch(`/?sections=${encodeURIComponent(drawerSectionId)}`, { cache: 'no-store' });
+    const sections = await res.json();
+    const html = sections[drawerSectionId];
+    if (!html) return;
+
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const newDrawer = doc.querySelector('cart-drawer-component');
+    if (!newDrawer) return;
+
+    currentDrawer.replaceWith(newDrawer);
+
+    const drawerNow = document.querySelector('cart-drawer-component');
+    if (drawerNow && typeof drawerNow.open === 'function') drawerNow.open();
+  }
+
+  function dispatchHorizonCartAddEvent() {
+    try {
+      document.dispatchEvent(new CustomEvent('cart:add'));
+      document.dispatchEvent(new CustomEvent('CartAddEvent'));
+    } catch (e) {}
+  }
+
+  // Submit Listener
+  productForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    atcBtn.classList.add('loading');
+    const btnText = atcBtn.querySelector('span');
+    const originalText = btnText ? btnText.innerText : '';
+    if (btnText) btnText.innerText = 'Adding...';
+
+    try {
+      const fd = new FormData(productForm);
+      const res = await fetch(`${window.Shopify.routes.root}cart/add.js`, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: fd
+      });
+
+      const data = await res.json();
+
+      atcBtn.classList.remove('loading');
+      if (btnText) btnText.innerText = originalText;
+
+      if (data.status) {
+        alert(data.description || 'Error adding to cart');
+        return;
+      }
+
+      showToast();
+      const cart = await getCartJSON();
+      updateHorizonBubbleCount(cart.item_count);
+      await refreshAndOpenDrawer();
+      dispatchHorizonCartAddEvent();
+
+    } catch (err) {
+      console.error('ATC Error:', err);
+      atcBtn.classList.remove('loading');
+      if (btnText) btnText.innerText = originalText;
+    }
+  });
+});
+
+/* -----------------------------
+   SIZE FINDER MODAL LOGIC
+------------------------------ */
+window.openSizeModal = function () {
+  const modal = document.getElementById('hqiSizeModal');
+  if (!modal) return;
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+};
+
+window.closeSizeModal = function () {
+  const modal = document.getElementById('hqiSizeModal');
+  if (!modal) return;
+  modal.classList.remove('active');
+  document.body.style.overflow = '';
+};
+
+// Click listeners for modal
+document.addEventListener('click', function (e) {
+  const trigger = e.target.closest('.hqi-size-finder-btn');
+  if (trigger) {
+    e.preventDefault();
+    window.openSizeModal();
+    return;
+  }
+  const overlay = e.target.closest('#hqiSizeModal');
+  if (overlay && e.target.id === 'hqiSizeModal') {
+    window.closeSizeModal();
+  }
+});
+
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape') window.closeSizeModal();
+});
+
+/* -----------------------------
+   ACCORDION LOGIC
+------------------------------ */
+window.toggleAccordion = function(button) {
+  button.classList.toggle('active');
+  const content = button.nextElementSibling;
+  if (content) {
+    content.classList.toggle('open');
+  }
+};
+
+/* -----------------------------
+   SLIDER & DROPDOWN LOGIC
+------------------------------ */
+// Slider
+let currentIndex = 0;
+const mainImg = document.getElementById('main-product-img');
+const thumbs = document.querySelectorAll('.hqi-gallery-thumb');
+
+function updateSliderUI(index) {
+  if(!window.productImages) return;
+  
+  mainImg.src = window.productImages[index];
+  mainImg.setAttribute('data-index', index);
+  
+  thumbs.forEach(t => t.classList.remove('active'));
+  // Note: Handling all thumbs including duplicates
+  if(thumbs[index]) thumbs[index].classList.add('active');
+  
+  currentIndex = index;
+}
+
+function changeSlide(direction) {
+  let newIndex = currentIndex + direction;
+  if (newIndex >= window.productImages.length) newIndex = 0;
+  if (newIndex < 0) newIndex = window.productImages.length - 1;
+  updateSliderUI(newIndex);
+}
+
+function goToSlide(index) {
+  updateSliderUI(index);
+}
+
+// Dropdown
+function updateVariant(value, element) {
+  document.getElementById('selected-size-display').innerText = value;
+  element.closest('.hqi-custom-select-wrapper').classList.remove('open');
+  document.querySelectorAll('.hqi-custom-option').forEach(opt => opt.classList.remove('selected'));
+  element.classList.add('selected');
+  console.log("Selected Size:", value);
+}
+
+window.addEventListener('click', function(e) {
+  const select = document.querySelector('.hqi-custom-select-wrapper');
+  if (select && !select.contains(e.target)) {
+    select.classList.remove('open');
+  }
+});
+</script>
