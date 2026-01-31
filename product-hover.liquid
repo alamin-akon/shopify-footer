@@ -1,0 +1,280 @@
+{% schema %}
+{
+  "name": "Scent Reveal Grid",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "NEW BOADICEA SCENTS"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "scent_card",
+      "name": "Perfume Card",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product_ref",
+          "label": "Select Product",
+          "info": "Main image will come from this product"
+        },
+        {
+          "type": "image_picker",
+          "id": "ing_image_1",
+          "label": "Ingredient 1 (Top Left - Orris)"
+        },
+        {
+          "type": "image_picker",
+          "id": "ing_image_2",
+          "label": "Ingredient 2 (Bottom Left - Oud)"
+        },
+        {
+          "type": "image_picker",
+          "id": "ing_image_3",
+          "label": "Ingredient 3 (Top Right - Saffron)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Scent Reveal Grid",
+      "blocks": [
+        {
+          "type": "scent_card"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  .scent-section-wrapper {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: #f8f8f8;
+    text-align: center;
+  }
+  
+  .scent-heading {
+    margin-bottom: 40px;
+    font-size: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #000;
+  }
+
+  .scent-grid-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px; 
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* --- CARD CONTAINER CSS --- */
+  /* Changed from div to a tag style */
+  .scent-card {
+    text-decoration: none; /* Removes underline from link */
+    color: inherit; /* Keeps text color normal */
+    display: flex; /* Keeps layout flexible */
+    
+    position: relative;
+    width: 350px;
+    height: 520px; 
+    flex-direction: column; 
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 40px;
+    cursor: pointer;
+    background: #fff;
+    border: 1px solid transparent; 
+    border-radius: 8px;
+    transition: all 0.4s ease; 
+    overflow: hidden; 
+  }
+
+  /* --- CARD HOVER EFFECT --- */
+  .scent-card:hover {
+    border-color: #d1d1d1; 
+    transform: translateY(-10px); 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08); 
+  }
+
+  /* --- IMAGE WRAPPER --- */
+  .image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 300px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    pointer-events: none; /* Allows click to pass through to the card link */
+  }
+
+  /* Main Bottle (Top Layer) */
+  .bottle-img {
+    width: 200px;
+    z-index: 2;
+    position: relative;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  /* Common Style for Ingredients */
+  .ingredient {
+    position: absolute;
+    width: 80px;
+    z-index: 1; /* Behind the bottle */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.5); 
+    opacity: 0; 
+    transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  /* Scale bottle slightly */
+  .scent-card:hover .bottle-img {
+    transform: scale(1.08);
+  }
+
+  /* Orris - Top Left */
+.scent-card:hover .ing-pos-1 {
+    opacity: 1;
+    transform: translate(-99px, -53px) rotate(-21deg) scale(1.1);
+}
+
+  /* Oud - Bottom Right */
+.scent-card:hover .ing-pos-2 {
+    opacity: 1;
+    transform: translate(-105px, 0px) rotate(-50deg) scale(1.1);
+}
+
+  /* Saffron - Top Right */
+.scent-card:hover .ing-pos-3 {
+    opacity: 1;
+    transform: translate(34px, -38px) rotate(23deg) scale(1.0);
+}
+
+  /* --- PRODUCT INFO CSS --- */
+  .scent-info {
+    text-align: center;
+    z-index: 20;
+    padding: 0 20px;
+    width: 100%;
+  }
+
+  .product-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    margin: 10px 0 5px;
+    text-transform: uppercase;
+    display: block;
+  }
+
+  .product-price {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 15px;
+  }
+
+  /* --- VIEW DETAILS BUTTON --- */
+  /* Changed from 'a' to 'span' because it's inside another 'a' tag */
+  .view-details-btn {
+    display: inline-block;
+    padding: 10px 25px;
+    background-color: #000;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: bold;
+    opacity: 0; 
+    transform: translateY(20px); 
+    transition: all 0.4s ease;
+    letter-spacing: 1px;
+    border-radius: 4px;
+  }
+
+  .scent-card:hover .view-details-btn {
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+
+</style>
+
+<div class="scent-section-wrapper">
+  {% if section.settings.heading != blank %}
+    <h2 class="scent-heading">{{ section.settings.heading }}</h2>
+  {% endif %}
+
+  <div class="scent-grid-container">
+    {% for block in section.blocks %}
+      {%- assign product_data = all_products[block.settings.product_ref] -%}
+      
+      {% if product_data != blank %}
+        <a href="{{ product_data.url }}" class="scent-card" {{ block.shopify_attributes }}>
+          
+          <div class="image-wrapper">
+            <img 
+              src="{{ product_data.featured_media | image_url: width: 400 }}" 
+              class="bottle-img" 
+              alt="{{ product_data.title }}"
+              loading="lazy"
+              width="220"
+              height="220"
+            >
+            
+            {% if block.settings.ing_image_1 != blank %}
+              <img src="{{ block.settings.ing_image_1 | image_url: width: 200 }}" class="ingredient ing-pos-1" loading="lazy" width="80" height="80">
+            {% endif %}
+
+            {% if block.settings.ing_image_2 != blank %}
+              <img src="{{ block.settings.ing_image_2 | image_url: width: 200 }}" class="ingredient ing-pos-2" loading="lazy" width="80" height="80">
+            {% endif %}
+
+            {% if block.settings.ing_image_3 != blank %}
+              <img src="{{ block.settings.ing_image_3 | image_url: width: 200 }}" class="ingredient ing-pos-3" loading="lazy" width="80" height="80">
+            {% endif %}
+          </div>
+
+          <div class="scent-info">
+            <span class="product-title">{{ product_data.title }}</span>
+            <div class="product-price">{{ product_data.price | money }}</div>
+            
+            <span class="view-details-btn">View Details</span>
+          </div>
+
+        </a>
+      {% else %}
+        <div class="scent-card" {{ block.shopify_attributes }}>
+           <p style="margin-top: 50%;">Select a Product</p>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>

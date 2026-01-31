@@ -1,0 +1,817 @@
+{% doc %}
+  @prompt
+    <div class="swiper card-swaper swiper-coverflow swiper-3d swiper-initialized swiper-horizontal swiper-watch-progress">
+        <div class="swiper-wrapper" style="transition-duration: 0ms; transform: translate3d(-1595.79px, 0px, 0px); transition-delay: 0ms;" id="swiper-wrapper-dd835715a4f26395" aria-live="off">
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+        <div class="swiper-slide" style="width: 525.286px; transition-duration: 0ms; transform: translate3d(0px, 0px, -707.011px) rotateX(0deg) rotateY(0deg) scale(1); z-index: -17; margin-right: 55px;" role="group" aria-label="3 / 7" data-swiper-slide-index="2">
+              <a href="https://www.afrozeh.com/products/meharbano">
+                <img src="//www.afrozeh.com/cdn/shop/files/047A4941_e2ae5ffa-9094-4b26-874c-bb247ff4db4c.jpg?v=1766059707" alt="Slide" width="auto" height="auto">
+              </a>
+            </div><div class="swiper-slide" style="width: 525.286px; transition-duration: 0ms; transform: translate3d(0px, 0px, -530.345px) rotateX(0deg) rotateY(0deg) scale(1); z-index: -12; margin-right: 55px;" role="group" aria-label="4 / 7" data-swiper-slide-index="3">
+              <a href="https://www.afrozeh.com/products/meera">
+                <img src="//www.afrozeh.com/cdn/shop/files/1O9A1683_732ea2a7-65c6-4bec-9847-6820a3cb5d96.jpg?v=1766059803" alt="Slide" width="auto" height="auto">
+              </a>
+            </div><div class="swiper-slide swiper-slide-visible" style="width: 525.286px; transition-duration: 0ms; transform: translate3d(0px, 0px, -353.375px) rotateX(0deg) rotateY(0deg) scale(1); z-index: -8; margin-right: 55px;" role="group" aria-label="5 / 7" data-swiper-slide-index="4">
+              <a href="https://www.afrozeh.com/products/shahnisa?_pos=2&amp;_psq=shahn&amp;_ss=e&amp;_v=1.0">
+                <img src="//www.afrozeh.com/cdn/shop/files/Untitled-6_0009_Layer_3.webp?v=1752151359" alt="Slide" width="auto" height="auto">
+              </a>
+            </div><div class="swiper-slide swiper-slide-visible swiper-slide-fully-visible swiper-slide-prev" style="width: 525.286px; transition-duration: 0ms; transform: translate3d(0px, 0px, -176.709px) rotateX(0deg) rotateY(0deg) scale(1); z-index: -3; margin-right: 55px;" role="group" aria-label="6 / 7" data-swiper-slide-index="5">
+              <a href="https://www.afrozeh.com/products/abeer">
+                <img src="//www.afrozeh.com/cdn/shop/files/1O9A1516_a5d38021-f0f4-4c49-9655-182ba24e1a9d.jpg?v=1766059855" alt="Slide" width="auto" height="auto">
+              </a>
+            </div><div class="swiper-slide swiper-slide-visible swiper-slide-fully-visible swiper-slide-active" style="width: 525.286px; transition-duration: 0ms; transform: translate3d(0px, 0px, -0.0435137px) rotateX(0deg) rotateY(0deg) scale(1); z-index: 1; margin-right: 55px;" role="group" aria-label="7 / 7" data-swiper-slide-index="6">
+              <a href="https://www.afrozeh.com/products/gulnar">
+                <img src="//www.afrozeh.com/cdn/shop/files/1O9A7893_9163da15-0624-42de-a2b4-837cf026da42.jpg?v=1766059910" alt="Slide" width="auto" height="auto">
+              </a>
+            </div><div class="swiper-slide swiper-slide-visible swiper-slide-fully-visible swiper-slide-next" style="width: 525.286px; transition-duration: 0ms; transform: translate3d(0px, 0px, -176.622px) rotateX(0deg) rotateY(0deg) scale(1); z-index: -3; margin-right: 55px;" role="group" aria-label="1 / 7" data-swiper-slide-index="0">
+              <a href="https://www.afrozeh.com/products/shahnoor?_pos=1&amp;_psq=shahnoor&amp;_ss=e&amp;_v=1.0">
+                <img src="//www.afrozeh.com/cdn/shop/files/Festive_3-6_0006_Layer_6.webp?v=1752671819" alt="Slide" width="auto" height="auto">
+              </a>
+            </div><div class="swiper-slide swiper-slide-visible" style="width: 525.286px; transition-duration: 0ms; transform: translate3d(0px, 0px, -353.593px) rotateX(0deg) rotateY(0deg) scale(1); z-index: -8; margin-right: 55px;" role="group" aria-label="2 / 7" data-swiper-slide-index="1">
+              <a href="https://www.afrozeh.com/products/shreya">
+                <img src="//www.afrozeh.com/cdn/shop/files/1O9A1043_0ba2a135-de43-46e7-bfe5-54cd94d25854.jpg?v=1766059389" alt="Slide" width="auto" height="auto">
+              </a>
+            </div></div>
+    
+        <!-- Navigation -->
+        <div class="swiper-button-prev" tabindex="0" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-dd835715a4f26395"></div>
+        <div class="swiper-button-next" tabindex="0" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-dd835715a4f26395"></div>
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-coverflow-carousel-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    padding: {{ block.settings.padding_top }}px 0 {{ block.settings.padding_bottom }}px;
+    background-color: {{ block.settings.background_color }};
+    overflow: hidden;
+  }
+
+  .ai-coverflow-carousel__container-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    max-width: {{ block.settings.container_width }}px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .ai-coverflow-carousel__heading-{{ ai_gen_id }} {
+    text-align: {{ block.settings.heading_alignment }};
+    margin-bottom: {{ block.settings.heading_spacing }}px;
+    color: {{ block.settings.heading_color }};
+    font-size: {{ block.settings.heading_size }}px;
+  }
+
+  .ai-coverflow-carousel__wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    height: {{ block.settings.carousel_height }}px;
+    perspective: {{ block.settings.perspective }}px;
+    overflow: visible;
+  }
+
+  .ai-coverflow-carousel__track-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform {{ block.settings.transition_speed }}ms ease-in-out;
+  }
+
+  .ai-coverflow-carousel__slide-{{ ai_gen_id }} {
+    position: absolute;
+    width: {{ block.settings.slide_width }}px;
+    height: {{ block.settings.slide_height }}px;
+    transition: all {{ block.settings.transition_speed }}ms ease-in-out;
+    transform-style: preserve-3d;
+    cursor: pointer;
+  }
+
+  .ai-coverflow-carousel__slide-link-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    border-radius: {{ block.settings.slide_border_radius }}px;
+    box-shadow: {{ block.settings.slide_shadow_x }}px {{ block.settings.slide_shadow_y }}px {{ block.settings.slide_shadow_blur }}px {{ block.settings.slide_shadow_color }};
+  }
+
+  .ai-coverflow-carousel__slide-link-{{ ai_gen_id }}:hover {
+    box-shadow: {{ block.settings.slide_shadow_x | times: 1.5 }}px {{ block.settings.slide_shadow_y | times: 1.5 }}px {{ block.settings.slide_shadow_blur | times: 1.5 }}px {{ block.settings.slide_shadow_color }};
+  }
+
+  .ai-coverflow-carousel__image-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ai-coverflow-carousel__placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ai-coverflow-carousel__placeholder-{{ ai_gen_id }} svg {
+    width: 60%;
+    height: 60%;
+    opacity: 0.3;
+  }
+
+  .ai-coverflow-carousel__nav-{{ ai_gen_id }} {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: {{ block.settings.nav_button_size }}px;
+    height: {{ block.settings.nav_button_size }}px;
+    background-color: {{ block.settings.nav_button_bg }};
+    color: {{ block.settings.nav_button_color }};
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  .ai-coverflow-carousel__nav-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.nav_button_hover_bg }};
+    color: {{ block.settings.nav_button_hover_color }};
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  .ai-coverflow-carousel__nav-{{ ai_gen_id }}:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .ai-coverflow-carousel__nav-{{ ai_gen_id }}:disabled:hover {
+    transform: translateY(-50%) scale(1);
+  }
+
+  .ai-coverflow-carousel__nav--prev-{{ ai_gen_id }} {
+    left: {{ block.settings.nav_button_offset }}px;
+  }
+
+  .ai-coverflow-carousel__nav--next-{{ ai_gen_id }} {
+    right: {{ block.settings.nav_button_offset }}px;
+  }
+
+  .ai-coverflow-carousel__nav-icon-{{ ai_gen_id }} {
+    width: 20px;
+    height: 20px;
+  }
+
+  @media screen and (max-width: 768px) {
+    .ai-coverflow-carousel__wrapper-{{ ai_gen_id }} {
+      height: {{ block.settings.carousel_height | times: 0.7 }}px;
+    }
+
+    .ai-coverflow-carousel__slide-{{ ai_gen_id }} {
+      width: {{ block.settings.slide_width | times: 0.7 }}px;
+      height: {{ block.settings.slide_height | times: 0.7 }}px;
+    }
+
+    .ai-coverflow-carousel__heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_size | times: 0.7 }}px;
+    }
+
+    .ai-coverflow-carousel__nav-{{ ai_gen_id }} {
+      width: {{ block.settings.nav_button_size | times: 0.8 }}px;
+      height: {{ block.settings.nav_button_size | times: 0.8 }}px;
+    }
+
+    .ai-coverflow-carousel__nav--prev-{{ ai_gen_id }} {
+      left: 10px;
+    }
+
+    .ai-coverflow-carousel__nav--next-{{ ai_gen_id }} {
+      right: 10px;
+    }
+  }
+{% endstyle %}
+
+<coverflow-carousel-{{ ai_gen_id }}
+  class="ai-coverflow-carousel-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+  data-rotation="{{ block.settings.rotation_angle }}"
+  data-depth="{{ block.settings.depth_offset }}"
+  data-scale="{{ block.settings.scale_factor }}"
+  data-loop="{{ block.settings.enable_loop }}"
+>
+  <div class="ai-coverflow-carousel__container-{{ ai_gen_id }}">
+    {% if block.settings.heading != blank %}
+      <h2 class="ai-coverflow-carousel__heading-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+    {% endif %}
+
+    <div class="ai-coverflow-carousel__wrapper-{{ ai_gen_id }}">
+      <div class="ai-coverflow-carousel__track-{{ ai_gen_id }}">
+        {% for i in (1..7) %}
+          {% liquid
+            assign image_key = 'slide_' | append: i | append: '_image'
+            assign link_key = 'slide_' | append: i | append: '_link'
+            assign image = block.settings[image_key]
+            assign link = block.settings[link_key]
+          %}
+
+          <div class="ai-coverflow-carousel__slide-{{ ai_gen_id }}" data-index="{{ forloop.index0 }}">
+            {% if link != blank %}
+              <a href="{{ link }}" class="ai-coverflow-carousel__slide-link-{{ ai_gen_id }}">
+            {% else %}
+              <div class="ai-coverflow-carousel__slide-link-{{ ai_gen_id }}">
+            {% endif %}
+              {% if image %}
+                <img
+                  src="{{ image | image_url: width: 800 }}"
+                  alt="{{ image.alt | escape }}"
+                  class="ai-coverflow-carousel__image-{{ ai_gen_id }}"
+                  loading="lazy"
+                  width="800"
+                  height="800"
+                >
+              {% else %}
+                <div class="ai-coverflow-carousel__placeholder-{{ ai_gen_id }}">
+                  {{ 'image' | placeholder_svg_tag }}
+                </div>
+              {% endif %}
+            {% if link != blank %}
+              </a>
+            {% else %}
+              </div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+
+      {% if block.settings.show_navigation %}
+        <button
+          class="ai-coverflow-carousel__nav-{{ ai_gen_id }} ai-coverflow-carousel__nav--prev-{{ ai_gen_id }}"
+          aria-label="Previous slide"
+        >
+          <svg class="ai-coverflow-carousel__nav-icon-{{ ai_gen_id }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <button
+          class="ai-coverflow-carousel__nav-{{ ai_gen_id }} ai-coverflow-carousel__nav--next-{{ ai_gen_id }}"
+          aria-label="Next slide"
+        >
+          <svg class="ai-coverflow-carousel__nav-icon-{{ ai_gen_id }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      {% endif %}
+    </div>
+  </div>
+</coverflow-carousel-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class CoverflowCarousel{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.currentIndex = 0;
+        this.slides = [];
+        this.totalSlides = 0;
+        this.isAnimating = false;
+      }
+
+      connectedCallback() {
+        this.slides = Array.from(this.querySelectorAll('.ai-coverflow-carousel__slide-{{ ai_gen_id }}'));
+        this.totalSlides = this.slides.length;
+        this.prevButton = this.querySelector('.ai-coverflow-carousel__nav--prev-{{ ai_gen_id }}');
+        this.nextButton = this.querySelector('.ai-coverflow-carousel__nav--next-{{ ai_gen_id }}');
+        this.rotationAngle = parseFloat(this.dataset.rotation) || 50;
+        this.depthOffset = parseFloat(this.dataset.depth) || 200;
+        this.scaleFactor = parseFloat(this.dataset.scale) || 0.8;
+        this.enableLoop = this.dataset.loop === 'true';
+
+        this.setupEventListeners();
+        this.updateSlides();
+      }
+
+      setupEventListeners() {
+        if (this.prevButton) {
+          this.prevButton.addEventListener('click', () => this.navigate(-1));
+        }
+        if (this.nextButton) {
+          this.nextButton.addEventListener('click', () => this.navigate(1));
+        }
+
+        this.slides.forEach((slide, index) => {
+          slide.addEventListener('click', (e) => {
+            if (index !== this.currentIndex) {
+              e.preventDefault();
+              const diff = index - this.currentIndex;
+              this.navigate(diff);
+            }
+          });
+        });
+
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        this.addEventListener('touchstart', (e) => {
+          touchStartX = e.changedTouches[0].screenX;
+        });
+
+        this.addEventListener('touchend', (e) => {
+          touchEndX = e.changedTouches[0].screenX;
+          this.handleSwipe(touchStartX, touchEndX);
+        });
+      }
+
+      handleSwipe(startX, endX) {
+        const diff = startX - endX;
+        if (Math.abs(diff) > 50) {
+          if (diff > 0) {
+            this.navigate(1);
+          } else {
+            this.navigate(-1);
+          }
+        }
+      }
+
+      navigate(direction) {
+        if (this.isAnimating) return;
+
+        const newIndex = this.currentIndex + direction;
+
+        if (!this.enableLoop) {
+          if (newIndex < 0 || newIndex >= this.totalSlides) return;
+        }
+
+        this.isAnimating = true;
+        this.currentIndex = ((newIndex % this.totalSlides) + this.totalSlides) % this.totalSlides;
+        this.updateSlides();
+
+        setTimeout(() => {
+          this.isAnimating = false;
+        }, 500);
+      }
+
+      updateSlides() {
+        this.slides.forEach((slide, index) => {
+          const position = index - this.currentIndex;
+          const absPosition = Math.abs(position);
+
+          let translateX = 0;
+          let translateZ = 0;
+          let rotateY = 0;
+          let scale = 1;
+          let zIndex = 0;
+          let opacity = 1;
+
+          if (position === 0) {
+            translateX = 0;
+            translateZ = 0;
+            rotateY = 0;
+            scale = 1;
+            zIndex = 10;
+            opacity = 1;
+          } else {
+            const direction = position > 0 ? 1 : -1;
+            translateX = direction * (absPosition * 150 + 100);
+            translateZ = -absPosition * this.depthOffset;
+            rotateY = -direction * this.rotationAngle;
+            scale = Math.pow(this.scaleFactor, absPosition);
+            zIndex = 10 - absPosition;
+            opacity = absPosition > 2 ? 0 : 1;
+          }
+
+          slide.style.transform = `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`;
+          slide.style.zIndex = zIndex;
+          slide.style.opacity = opacity;
+        });
+
+        if (this.prevButton && this.nextButton && !this.enableLoop) {
+          this.prevButton.disabled = this.currentIndex === 0;
+          this.nextButton.disabled = this.currentIndex === this.totalSlides - 1;
+        }
+      }
+    }
+
+    customElements.define('coverflow-carousel-{{ ai_gen_id }}', CoverflowCarousel{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "3D coverflow carousel",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 16,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "heading_spacing",
+      "label": "Heading spacing",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "label": "Container width",
+      "min": 800,
+      "max": 1600,
+      "step": 50,
+      "unit": "px",
+      "default": 1300
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Carousel settings"
+    },
+    {
+      "type": "range",
+      "id": "carousel_height",
+      "label": "Carousel height",
+      "min": 300,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "default": 500
+    },
+    {
+      "type": "range",
+      "id": "slide_width",
+      "label": "Slide width",
+      "min": 200,
+      "max": 600,
+      "step": 10,
+      "unit": "px",
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "slide_height",
+      "label": "Slide height",
+      "min": 200,
+      "max": 600,
+      "step": 10,
+      "unit": "px",
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "slide_border_radius",
+      "label": "Slide border radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "perspective",
+      "label": "3D perspective",
+      "min": 500,
+      "max": 2000,
+      "step": 50,
+      "unit": "px",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "rotation_angle",
+      "label": "Rotation angle",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "deg",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "depth_offset",
+      "label": "Depth offset",
+      "min": 50,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "default": 200
+    },
+    {
+      "type": "range",
+      "id": "scale_factor",
+      "label": "Scale factor",
+      "min": 0.5,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.8
+    },
+    {
+      "type": "range",
+      "id": "transition_speed",
+      "label": "Transition speed",
+      "min": 200,
+      "max": 1000,
+      "step": 50,
+      "unit": "ms",
+      "default": 500
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_loop",
+      "label": "Enable loop",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Slide shadow"
+    },
+    {
+      "type": "range",
+      "id": "slide_shadow_x",
+      "label": "Shadow X offset",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "slide_shadow_y",
+      "label": "Shadow Y offset",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "slide_shadow_blur",
+      "label": "Shadow blur",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "color",
+      "id": "slide_shadow_color",
+      "label": "Shadow color",
+      "default": "rgba(0, 0, 0, 0.2)"
+    },
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "label": "Show navigation",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "nav_button_size",
+      "label": "Button size",
+      "min": 30,
+      "max": 70,
+      "step": 2,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "nav_button_offset",
+      "label": "Button offset",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "color",
+      "id": "nav_button_bg",
+      "label": "Button background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "nav_button_color",
+      "label": "Button color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "nav_button_hover_bg",
+      "label": "Button hover background",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "nav_button_hover_color",
+      "label": "Button hover color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Slide 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_1_image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "slide_1_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Slide 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_2_image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "slide_2_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Slide 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_3_image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "slide_3_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Slide 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_4_image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "slide_4_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Slide 5"
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_5_image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "slide_5_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Slide 6"
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_6_image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "slide_6_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Slide 7"
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_7_image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "slide_7_link",
+      "label": "Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "3D coverflow carousel"
+    }
+  ]
+}
+{% endschema %}
