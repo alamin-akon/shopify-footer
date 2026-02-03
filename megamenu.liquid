@@ -1,0 +1,523 @@
+
+
+
+
+{{ 'component-header-advanced.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  :root {
+    --header-max-width: {{ section.settings.custom_width }}px;
+    --header-bg: {{ section.settings.bg_color }};
+    --accent-red: {{ section.settings.accent_color }};
+    --text-color: {{ section.settings.text_color }};
+    --logo-font-size: {{ section.settings.logo_font_size }}px;
+    --logo-font-weight: {{ section.settings.logo_font_weight }};
+    --nav-font-size: {{ section.settings.nav_font_size }}px;
+    --nav-font-weight: {{ section.settings.nav_font_weight }};
+    --header-padding-top-bottom: {{ section.settings.padding_tb }}px;
+    --glass-blur: {{ section.settings.glass_blur }}px;
+    --glass-opacity: {{ section.settings.glass_opacity }};
+  }
+
+  .header-container { max-width: var(--header-max-width); margin: 0 auto; padding: 0 20px; }
+  .header-advanced-wrapper { background: var(--header-bg); position: relative; z-index: 1000; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
+
+  /* --- Desktop Style --- */
+  .utility-nav { display: flex; gap: 20px; list-style: none; margin: 0; padding: 10px 0; border-bottom: 1px solid #f2f2f2; }
+  .utility-nav li a { font-size: 14px; text-decoration: none; color: var(--text-color); }
+  .header-main-flex { display: flex; align-items: center; justify-content: space-between; padding: var(--header-padding-top-bottom) 0; gap: 20px; }
+  .logo-area-wrapper { display: flex; align-items: center; gap: 15px; }
+  .logo-side-info { border-left: 1px solid #ddd; padding-left: 15px; text-decoration: none; line-height: 1.2; }
+  .logo-side-info .line-1 { display: block; font-size: 14px; color: #000; font-weight: 700; }
+  .logo-side-info .line-2 { display: block; font-size: 12px; color: var(--accent-red); text-decoration: underline; }
+  .header-search { flex: 1; max-width: 650px; position: relative; }
+  .header-search input { width: 100%; padding: 12px 50px 12px 20px; border-radius: 50px; border: 1px solid #ccc; outline: none; font-size: 16px; }
+  .header-account-cart { display: flex; align-items: center; gap: 20px; }
+  
+  .header-bottom-row { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #eee; }
+  .main-nav-list { display: flex; list-style: none; padding: 0; margin: 0; }
+  .nav-item { position: relative; }
+  .nav-link { display: block; padding: {{ section.settings.nav_padding_tb }}px {{ section.settings.nav_padding_lr }}px; text-decoration: none; color: var(--text-color); font-weight: var(--nav-font-weight); font-size: var(--nav-font-size); }
+  
+  .bottom-right-links { display: flex; align-items: center; gap: 15px; list-style: none; margin: 0; padding: 0; }
+  .bottom-right-links a { text-decoration: none; font-size: 14px; font-weight: 600; }
+
+  /* Dropdowns */
+  .nav-item:hover .simple-dropdown, .nav-item:hover .mega-menu-panel { display: block; }
+  .simple-dropdown { position: absolute; top: 100%; left: 0; min-width: 200px; background: #fff; display: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-radius: 0 0 8px 8px; padding: 0; z-index: 1000; }
+  .simple-dropdown a { display: block; padding: 12px 20px; text-decoration: none; color: #333; font-size: 14px; border-bottom: 1px solid #f5f5f5; transition: background 0.2s; }
+  .simple-dropdown a:last-child { border-bottom: none; }
+  .simple-dropdown a:hover { background: #f9f9f9; }
+  
+  .mega-menu-panel { position: absolute; top: 100%; left: 0; width: 850px; background: #fff; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-radius: 0 0 12px 12px; overflow: hidden; z-index: 1000; }
+  .mega-menu-inner { display: flex; min-height: 400px; }
+  .mega-sidebar { width: 260px; border-right: 1px solid #f0f0f0; background: #fff; }
+  .sidebar-item { padding: 15px 25px; font-size: 14px; color: var(--text-color); cursor: pointer; display: flex; justify-content: space-between; border-bottom: 1px solid #f9f9f9; }
+  .sidebar-item.is-active { background: var(--accent-red); color: #fff; font-weight: 700; }
+  .mega-content-area { flex: 1; padding: 25px; display: none; }
+  .mega-content-area.is-active { display: block; }
+
+  /* Sticky */
+  .sticky-header-active .header-main-sticky-unit { position: fixed; top: 0; left: 0; width: 100%; z-index: 1001; background: {{ section.settings.bg_color | color_modify: 'alpha', section.settings.glass_opacity }}; backdrop-filter: blur(var(--glass-blur)); box-shadow: 0 4px 15px rgba(0,0,0,0.08); animation: slideDown 0.3s ease; }
+  .sticky-header-active > .header-container:first-child { display: none !important; }
+  .sticky-header-active > .header-container:last-child { display: none !important; }
+  @keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+
+  /* --- Mobile Drawer Styles --- */
+  .mobile-toggle { display: none; background: none; border: none; cursor: pointer; padding: 5px; }
+  .drawer-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1999; display: none; }
+  .mobile-drawer { position: fixed; top: 0; left: -100%; width: 85%; max-width: 400px; height: 100%; background: #fff; z-index: 2000; transition: 0.3s ease; overflow-y: auto; }
+  .mobile-drawer.open { left: 0; }
+
+  /* Mobile Drawer Header */
+  .drawer-header { padding: 18px 20px; border-bottom: 1px solid #eee; background: #fff; }
+  .drawer-header-top { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  .drawer-header-top svg { flex-shrink: 0; }
+  .drawer-loc { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 15px; color: #333; }
+  .drawer-loc span { display: flex; align-items: center; gap: 5px; }
+  .drawer-hours { font-size: 13px; color: var(--accent-red); text-decoration: underline; margin-left: 36px; }
+
+  /* Drawer Pills */
+  .drawer-pills { padding: 15px 20px; background: #fff; border-bottom: 1px solid #eee; }
+  .pill-btn { border: 1px solid #ddd; border-radius: 50px; padding: 12px; text-align: center; text-decoration: none; color: #333; font-size: 14px; font-weight: 600; display: block; transition: 0.2s; background: #fff; }
+  .pill-btn:hover { background: #f5f5f5; }
+  .pill-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+
+  /* Main Menu Panel */
+  .drawer-main-panel { position: relative; background: #fff; }
+  
+  /* Submenu Panel */
+  .drawer-submenu-panel { position: absolute; top: 0; left: 100%; width: 100%; height: 100%; background: #fff; transition: 0.3s ease; z-index: 10; }
+  .drawer-submenu-panel.active { left: 0; }
+
+  /* Submenu Header */
+  .submenu-header { padding: 18px 20px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 15px; background: #fafafa; }
+  .submenu-back-btn { background: none; border: none; cursor: pointer; padding: 5px; display: flex; align-items: center; }
+  .submenu-title { font-size: 16px; font-weight: 700; color: #333; margin: 0; }
+
+  /* Menu Items */
+  .drawer-menu { list-style: none; padding: 0; margin: 0; }
+  .drawer-menu-item { border-bottom: 1px solid #f0f0f0; }
+  .drawer-menu-link { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; text-decoration: none; color: #333; font-weight: 600; font-size: 15px; background: #fff; transition: 0.2s; }
+  .drawer-menu-link:active { background: #f5f5f5; }
+  .drawer-menu-link svg { color: #999; flex-shrink: 0; }
+
+  /* Accordion Submenu */
+  .accordion-item { border-bottom: 1px solid #f0f0f0; }
+  .accordion-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background: #fff; border: none; width: 100%; text-align: left; cursor: pointer; font-weight: 600; font-size: 15px; color: #333; transition: 0.2s; }
+  .accordion-header:active { background: #f5f5f5; }
+  .accordion-header svg { transition: 0.3s; color: #999; }
+  .accordion-header.active svg { transform: rotate(90deg); }
+  .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; background: #fff; }
+  .accordion-content.active { max-height: 2000px; }
+  .accordion-submenu { list-style: none; padding: 0; margin: 0; }
+  .accordion-submenu-link { display: block; padding: 12px 20px 12px 40px; text-decoration: none; color: #555; font-size: 14px; border-bottom: 1px solid #f8f8f8; transition: 0.2s; }
+  .accordion-submenu-link:active { background: #f5f5f5; }
+  .accordion-submenu-link:last-child { border-bottom: none; }
+
+  /* Promo Section */
+  .drawer-promo { padding: 20px; background: #fff; }
+  .drawer-promo img { width: 100%; border-radius: 8px; margin-bottom: 12px; }
+  .drawer-promo h4 { font-size: 16px; font-weight: 700; margin: 0 0 8px; color: #333; }
+  .drawer-promo p { font-size: 13px; color: #666; margin: 0 0 10px; line-height: 1.4; }
+  .drawer-promo a { display: inline-block; font-size: 13px; color: #000; font-weight: 700; text-decoration: none; }
+
+  /* Footer */
+  .drawer-footer { padding: 20px; color: #666; font-size: 14px; background: #fafafa; border-top: 1px solid #eee; }
+
+  @media screen and (max-width: 768px) {
+    .utility-nav, .header-bottom-row, .logo-side-info, .account-link span { display: none; }
+    .mobile-toggle { display: block; order: 1; }
+    .logo-area-wrapper { order: 2; }
+    .header-account-cart { order: 3; gap: 12px; }
+    .header-search { order: 4; width: 100%; max-width: none; margin-top: 10px; }
+    .header-main-flex { flex-wrap: wrap; padding: 10px 0; }
+    
+    /* Mobile Sticky State */
+    .sticky-header-active .mobile-toggle { order: 1; }
+    .sticky-header-active .header-search { order: 2; width: calc(100% - 120px); margin-top: 0; flex: 1; }
+    .sticky-header-active .header-account-cart { order: 3; }
+    .sticky-header-active .logo-area-wrapper { display: none !important; }
+    .sticky-header-active .header-main-flex { padding: 8px 0; }
+  }
+{%- endstyle -%}
+
+<div class="header-advanced-wrapper" id="MainHeaderWrapper">
+  {%- if section.settings.show_top_bar -%}
+  <div class="header-container">
+    <ul class="utility-nav">
+      {%- for block in section.blocks -%}{%- if block.type == 'utility_link' -%}
+        <li><a href="{{ block.settings.url }}">{{ block.settings.text }}</a></li>
+      {%- endif -%}{%- endfor -%}
+    </ul>
+  </div>
+  {%- endif -%}
+
+  <div class="header-main-sticky-unit">
+    <div class="header-container">
+      <div class="header-main-flex">
+        <button class="mobile-toggle" id="DrawerOpen">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+
+        <div class="logo-area-wrapper">
+          <a href="/" class="header-logo" style="text-decoration:none;">
+            {%- if section.settings.logo_image != blank -%}
+              <img src="{{ section.settings.logo_image | image_url: width: 400 }}" width="{{ section.settings.logo_width }}" alt="{{ shop.name }}">
+            {%- else -%}
+              <h1 style="color:var(--accent-red); margin:0; font-size:var(--logo-font-size); font-weight:var(--logo-font-weight);">{{ section.settings.logo_text }}</h1>
+            {%- endif -%}
+          </a>
+          {%- if section.settings.logo_side_text != blank -%}
+          <a href="{{ section.settings.logo_side_url }}" class="logo-side-info">
+            <span class="line-1">{{ section.settings.logo_side_text }}</span>
+            <span class="line-2">{{ section.settings.logo_side_subtext }}</span>
+          </a>
+          {%- endif -%}
+        </div>
+
+        <div class="header-search">
+          <form action="/search" method="get">
+            <input type="search" name="q" placeholder="{{ section.settings.search_placeholder }}">
+            <button type="submit" style="position:absolute; right:15px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
+          </form>
+        </div>
+
+        <div class="header-account-cart">
+          <a href="/account" class="account-link" style="text-decoration:none; color:var(--text-color); display:flex; align-items:center; gap:8px; font-weight:600;">
+            <span>{{ section.settings.signin_text }}</span>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          </a>
+          <a href="/cart" class="cart-link" style="color:var(--text-color);">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4H6z"></path><line x1="3" x2="21" y1="6" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="header-container">
+    <div class="header-bottom-row">
+      <ul class="main-nav-list">
+        {%- for block in section.blocks -%}{%- if block.type == 'mega_menu' -%}
+            <li class="nav-item">
+              <a href="{{ block.settings.main_url }}" class="nav-link">{{ block.settings.title }}</a>
+              {%- assign nav_menu = linklists[block.settings.sidebar_menu] -%}
+              {%- if nav_menu.links.size > 0 -%}
+                {%- assign is_mega = false -%}
+                {%- for link in nav_menu.links -%}
+                  {%- if link.links.size > 0 -%}
+                    {%- assign is_mega = true -%}
+                    {%- break -%}
+                  {%- endif -%}
+                {%- endfor -%}
+                
+                {%- if is_mega -%}
+                  <div class="mega-menu-panel"><div class="mega-menu-inner">
+                    <div class="mega-sidebar">
+                      {%- for link in nav_menu.links -%}<div class="sidebar-item {% if forloop.first %}is-active{% endif %}" data-target="tab-{{ block.id }}-{{ forloop.index }}">{{ link.title }} <span>❯</span></div>{%- endfor -%}
+                    </div>
+                    <div style="flex: 1;">
+                      {%- for link in nav_menu.links -%}<div id="tab-{{ block.id }}-{{ forloop.index }}" class="mega-content-area {% if forloop.first %}is-active{% endif %}">
+                        <div style="display: grid; grid-template-columns: 1fr 250px; gap: 20px;">
+                          <div><h4 style="color:var(--accent-red); margin-bottom:15px;">All {{ link.title }}</h4><ul style="list-style:none; padding:0; margin:0;">{%- for childlink in link.links -%}<li style="margin-bottom:8px;"><a href="{{ childlink.url }}" style="text-decoration:none; color:#444; font-size: 14px;">{{ childlink.title }}</a></li>{%- endfor -%}</ul></div>
+                          <div class="promo-box">{%- for img_block in section.blocks -%}{%- if img_block.type == 'category_image' and img_block.settings.match_name == link.title -%}<img src="{{ img_block.settings.image | image_url: width: 300 }}" style="width:100%; border-radius:8px;"><h5 style="margin:10px 0 5px;">{{ img_block.settings.heading }}</h5><a href="{{ img_block.settings.link_url }}" style="font-size:12px; color:#000; font-weight:700;">Shop now</a>{%- endif -%}{%- endfor -%}</div>
+                        </div>
+                      </div>{%- endfor -%}
+                    </div>
+                  </div></div>
+                {%- else -%}
+                  <div class="simple-dropdown">{%- for link in nav_menu.links -%}<a href="{{ link.url }}">{{ link.title }}</a>{%- endfor -%}</div>
+                {%- endif -%}
+              {%- endif -%}
+            </li>
+        {%- endif -%}{%- endfor -%}
+      </ul>
+
+      <ul class="bottom-right-links">
+        {%- for block in section.blocks -%}{%- if block.type == 'bottom_right_link' -%}
+            <li><a href="{{ block.settings.link_url }}" style="color: {{ block.settings.link_color }};">{{ block.settings.link_text }}</a></li>
+        {%- endif -%}{%- endfor -%}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Mobile Drawer -->
+  <div class="drawer-overlay" id="Overlay"></div>
+  <div class="mobile-drawer" id="Drawer">
+    <!-- Header -->
+    <div class="drawer-header">
+      <div class="drawer-header-top">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+        <div class="drawer-loc">
+          <span>{{ section.settings.logo_side_text }} 
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </span>
+        </div>
+      </div>
+      <div class="drawer-hours">{{ section.settings.logo_side_subtext }}</div>
+    </div>
+
+    <!-- Pills -->
+    <div class="drawer-pills">
+      <a href="#" class="pill-btn">Safeway for U</a>
+      <div class="pill-grid">
+        <a href="#" class="pill-btn">Weekly Ad</a>
+        <a href="#" class="pill-btn">Safeway AI</a>
+      </div>
+    </div>
+
+    <!-- Main Menu Panel -->
+    <div class="drawer-main-panel">
+      <ul class="drawer-menu" id="MainMenu">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'mega_menu' -%}
+            {%- assign nav_menu = linklists[block.settings.sidebar_menu] -%}
+            {%- if nav_menu.links.size > 0 -%}
+              {%- assign has_submenu = false -%}
+              {%- for link in nav_menu.links -%}
+                {%- if link.links.size > 0 -%}
+                  {%- assign has_submenu = true -%}
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+              
+              {%- if has_submenu -%}
+                <li class="drawer-menu-item">
+                  <a href="javascript:void(0)" class="drawer-menu-link" onclick="openSubmenu('{{ block.id }}', '{{ block.settings.title }}')">
+                    {{ block.settings.title }}
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                  </a>
+                </li>
+              {%- else -%}
+                <li class="drawer-menu-item">
+                  <a href="{{ block.settings.main_url }}" class="drawer-menu-link">
+                    {{ block.settings.title }}
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                  </a>
+                </li>
+              {%- endif -%}
+            {%- else -%}
+              <li class="drawer-menu-item">
+                <a href="{{ block.settings.main_url }}" class="drawer-menu-link">
+                  {{ block.settings.title }}
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </a>
+              </li>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+        
+        <li class="drawer-menu-item">
+          <a href="#" class="drawer-menu-link">
+            Recipes
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </a>
+        </li>
+        <li class="drawer-menu-item">
+          <a href="#" class="drawer-menu-link">
+            Shop more
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Submenu Panels -->
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'mega_menu' -%}
+        {%- assign nav_menu = linklists[block.settings.sidebar_menu] -%}
+        {%- if nav_menu.links.size > 0 -%}
+          {%- assign has_submenu = false -%}
+          {%- for link in nav_menu.links -%}
+            {%- if link.links.size > 0 -%}
+              {%- assign has_submenu = true -%}
+              {%- break -%}
+            {%- endif -%}
+          {%- endfor -%}
+          
+          {%- if has_submenu -%}
+            <div class="drawer-submenu-panel" id="submenu-{{ block.id }}">
+              <div class="submenu-header">
+                <button class="submenu-back-btn" onclick="closeSubmenu('{{ block.id }}')">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                  </svg>
+                </button>
+                <h3 class="submenu-title">{{ block.settings.title }}</h3>
+              </div>
+              
+              <div class="drawer-menu">
+                {%- for link in nav_menu.links -%}
+                  {%- if link.links.size > 0 -%}
+                    <div class="accordion-item">
+                      <button class="accordion-header" onclick="toggleAccordion(this)">
+                        {{ link.title }}
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                      </button>
+                      <div class="accordion-content">
+                        <ul class="accordion-submenu">
+                          <li><a href="{{ link.url }}" class="accordion-submenu-link">All {{ link.title }}</a></li>
+                          {%- for childlink in link.links -%}
+                            <li><a href="{{ childlink.url }}" class="accordion-submenu-link">{{ childlink.title }}</a></li>
+                          {%- endfor -%}
+                        </ul>
+                        
+                        {%- for img_block in section.blocks -%}
+                          {%- if img_block.type == 'category_image' and img_block.settings.match_name == link.title -%}
+                            <div class="drawer-promo">
+                              <img src="{{ img_block.settings.image | image_url: width: 400 }}" alt="{{ img_block.settings.heading }}">
+                              <h4>{{ img_block.settings.heading }}</h4>
+                              <p>{{ img_block.settings.description }}</p>
+                              <a href="{{ img_block.settings.link_url }}">Shop now</a>
+                            </div>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </div>
+                    </div>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+
+    <div class="drawer-footer">New year, new you</div>
+  </div>
+</div>
+
+<script>
+  // Sticky & Hover
+  const header = document.getElementById('MainHeaderWrapper');
+  window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 50) {
+      header.classList.add('sticky-header-active');
+    } else {
+      header.classList.remove('sticky-header-active');
+    }
+  });
+
+  document.querySelectorAll('.sidebar-item').forEach(item => {
+    item.addEventListener('mouseenter', function() {
+      const parent = this.closest('.mega-menu-inner');
+      parent.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('is-active'));
+      parent.querySelectorAll('.mega-content-area').forEach(c => c.classList.remove('is-active'));
+      this.classList.add('is-active');
+      const target = document.getElementById(this.getAttribute('data-target'));
+      if(target) target.classList.add('is-active');
+    });
+  });
+
+  // Mobile Drawer Toggle
+  const openBtn = document.getElementById('DrawerOpen');
+  const drawer = document.getElementById('Drawer');
+  const overlay = document.getElementById('Overlay');
+
+  function toggleDrawer() {
+    drawer.classList.toggle('open');
+    overlay.style.display = drawer.classList.contains('open') ? 'block' : 'none';
+    document.body.style.overflow = drawer.classList.contains('open') ? 'hidden' : '';
+  }
+  openBtn.addEventListener('click', toggleDrawer);
+  overlay.addEventListener('click', toggleDrawer);
+
+  // Submenu Navigation
+  function openSubmenu(id, title) {
+    const submenu = document.getElementById('submenu-' + id);
+    if (submenu) {
+      submenu.classList.add('active');
+    }
+  }
+
+  function closeSubmenu(id) {
+    const submenu = document.getElementById('submenu-' + id);
+    if (submenu) {
+      submenu.classList.remove('active');
+      // Close all accordions
+      submenu.querySelectorAll('.accordion-header').forEach(header => {
+        header.classList.remove('active');
+      });
+      submenu.querySelectorAll('.accordion-content').forEach(content => {
+        content.classList.remove('active');
+      });
+    }
+  }
+
+  // Accordion Toggle
+  function toggleAccordion(button) {
+    const content = button.nextElementSibling;
+    const isActive = button.classList.contains('active');
+    
+    // Close all accordions in this submenu
+    const submenu = button.closest('.drawer-submenu-panel');
+    submenu.querySelectorAll('.accordion-header').forEach(header => {
+      header.classList.remove('active');
+    });
+    submenu.querySelectorAll('.accordion-content').forEach(c => {
+      c.classList.remove('active');
+    });
+    
+    // Open this accordion if it wasn't active
+    if (!isActive) {
+      button.classList.add('active');
+      content.classList.add('active');
+    }
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Header - Pro Advanced",
+  "settings": [
+    { "type": "range", "id": "custom_width", "min": 1000, "max": 2000, "step": 50, "default": 1400, "label": "Max Container Width" },
+    { "type": "color", "id": "bg_color", "label": "Background Color", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text Color", "default": "#333333" },
+    { "type": "color", "id": "accent_color", "label": "Accent (Red) Color", "default": "#8e1015" },
+    { "type": "checkbox", "id": "show_top_bar", "label": "Show Top Utility Bar", "default": true },
+    { "type": "text", "id": "logo_side_text", "label": "Main Text (Location)", "default": "5100 Broadway" },
+    { "type": "text", "id": "logo_side_subtext", "label": "Sub Text (Hours)", "default": "Hours & info" },
+    { "type": "url", "id": "logo_side_url", "label": "Info Link" },
+    { "type": "range", "id": "glass_blur", "min": 0, "max": 25, "step": 1, "default": 10, "unit": "px", "label": "Blur Intensity" },
+    { "type": "range", "id": "glass_opacity", "min": 0.1, "max": 1.0, "step": 0.1, "default": 0.8, "label": "Sticky Background Opacity" },
+    { "type": "image_picker", "id": "logo_image", "label": "Logo Image" },
+    { "type": "range", "id": "logo_width", "min": 50, "max": 400, "step": 5, "default": 180, "unit": "px", "label": "Logo Image Width" },
+    { "type": "text", "id": "logo_text", "label": "Logo Text (No Image)", "default": "EUROPEAN STORE" },
+    { "type": "range", "id": "logo_font_size", "min": 18, "max": 40, "step": 1, "default": 26, "label": "Logo Font Size" },
+    { "type": "select", "id": "logo_font_weight", "label": "Logo Font Weight", "options": [{"value":"400","label":"Regular"},{"value":"700","label":"Bold"},{"value":"900","label":"Black"}], "default": "900" },
+    { "type": "range", "id": "padding_tb", "min": 5, "max": 50, "default": 15, "label": "Main Row Padding" },
+    { "type": "range", "id": "nav_padding_tb", "min": 5, "max": 30, "default": 15, "label": "Nav Link Padding Y" },
+    { "type": "range", "id": "nav_padding_lr", "min": 5, "max": 30, "default": 12, "label": "Nav Link Padding X" },
+    { "type": "range", "id": "nav_font_size", "min": 12, "max": 20, "default": 14, "label": "Nav Font Size" },
+    { "type": "select", "id": "nav_font_weight", "label": "Nav Weight", "options": [{"value":"400","label":"Regular"},{"value":"600","label":"Semi-Bold"},{"value":"700","label":"Bold"}], "default": "600" },
+    { "type": "text", "id": "search_placeholder", "label": "Placeholder", "default": "Search products" },
+    { "type": "text", "id": "signin_text", "label": "Sign In Text", "default": "Sign in" }
+  ],
+  "blocks": [
+    { "type": "utility_link", "name": "Top Bar Link", "settings": [{ "type": "text", "id": "text", "label": "Text" }, { "type": "url", "id": "url", "label": "URL" }] },
+    { "type": "mega_menu", "name": "Nav Item (Menu)", "settings": [{ "type": "text", "id": "title", "label": "Menu Name" }, { "type": "url", "id": "main_url", "label": "Main Link" }, { "type": "link_list", "id": "sidebar_menu", "label": "Select Menu" }] },
+    { "type": "bottom_right_link", "name": "Bottom Nav Right Link", "settings": [{ "type": "text", "id": "link_text", "label": "Link Text" }, { "type": "url", "id": "link_url", "label": "Link URL" }, { "type": "color", "id": "link_color", "label": "Link Color", "default": "#8e1015" }] },
+    { "type": "category_image", "name": "Mega Menu Promo Image", "settings": [{ "type": "text", "id": "match_name", "label": "Category Name Match" }, { "type": "image_picker", "id": "image", "label": "Image" }, { "type": "text", "id": "heading", "label": "Heading" }, { "type": "text", "id": "description", "label": "Description" }, { "type": "url", "id": "link_url", "label": "Link URL" }] }
+  ]
+}
+{% endschema %}
