@@ -1,0 +1,482 @@
+{% schema %}
+{
+  "name": "GSAP Luxury Hero",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Slider Configuration"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Enable Autoplay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "unit": "s",
+      "label": "Autoplay Duration",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "transition_speed",
+      "min": 0.5,
+      "max": 3.0,
+      "step": 0.1,
+      "unit": "s",
+      "label": "Transition Smoothness",
+      "default": 1.2,
+      "info": "Higher values create a slower, more luxurious transition."
+    },
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "select",
+      "id": "desktop_height",
+      "label": "Desktop Height",
+      "options": [
+        { "value": "100vh", "label": "Full Screen (100vh)" },
+        { "value": "80vh", "label": "Large (80vh)" },
+        { "value": "700px", "label": "Fixed (700px)" }
+      ],
+      "default": "100vh"
+    },
+    {
+      "type": "select",
+      "id": "mobile_height",
+      "label": "Mobile Height",
+      "options": [
+        { "value": "100vh", "label": "Full Screen (100vh)" },
+        { "value": "80vh", "label": "Large Mobile (80vh)" },
+        { "value": "70vh", "label": "Medium Mobile (70vh)" },
+        { "value": "500px", "label": "Fixed (500px)" }
+      ],
+      "default": "80vh"
+    },
+    {
+      "type": "header",
+      "content": "Global Typography"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 40,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Desktop Heading Size",
+      "default": 100
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Global Text Color",
+      "default": "#ffffff"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Desktop Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile Image (Specific)"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subheading",
+          "default": "new collection"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "VENUS"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Description",
+          "default": "Freshwater pearls & trios of precious gems. Everyday elegance."
+        },
+        {
+          "type": "select",
+          "id": "alignment",
+          "label": "Content Alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "header",
+          "content": "Button"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button Label",
+          "default": "EXPLORE"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        },
+        {
+          "type": "header",
+          "content": "Overlay"
+        },
+        {
+          "type": "color",
+          "id": "overlay_color",
+          "label": "Overlay Color",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "min": 0,
+          "max": 90,
+          "step": 5,
+          "unit": "%",
+          "label": "Overlay Opacity",
+          "default": 30
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "GSAP Luxury Hero",
+      "blocks": [
+        { "type": "slide", "settings": { "heading": "VENUS" } },
+        { "type": "slide", "settings": { "heading": "AURA" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@200;300;400;600&display=swap');
+
+  .hqi-gsap-hero-{{ section.id }} {
+    position: relative;
+    width: 100%;
+    height: {{ section.settings.desktop_height }};
+    overflow: hidden;
+    background: #000;
+    font-family: 'Montserrat', sans-serif;
+    color: {{ section.settings.text_color }};
+  }
+
+  .hqi-gsap-track {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    position: relative;
+  }
+
+  .hqi-gsap-slide {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    align-items: center;
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  .hqi-gsap-slide.active {
+    visibility: visible;
+    opacity: 1;
+    z-index: 2;
+  }
+
+  .hqi-gsap-bg {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 1;
+    transform: scale(1.1); /* Prep for smooth zoom in GSAP */
+  }
+
+  .hqi-gsap-bg img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .hqi-gsap-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 2;
+  }
+
+  .hqi-gsap-container {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .hqi-gsap-content {
+    max-width: 800px;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  /* Alignment Logic */
+  .align-left { text-align: left; margin-right: auto; }
+  .align-center { text-align: center; margin-left: auto; margin-right: auto; }
+  .align-right { text-align: right; margin-left: auto; }
+
+  .hqi-gsap-subheading {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5em;
+    margin-bottom: 25px;
+    display: block;
+    font-weight: 300;
+  }
+
+  .hqi-gsap-heading {
+    font-family: 'Cinzel', serif;
+    /* Responsive font size clamp */
+    font-size: clamp(36px, 6vw, {{ section.settings.heading_size }}px);
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    margin: 0 0 35px 0;
+    line-height: 1.1;
+    color: inherit; 
+  }
+
+  .hqi-gsap-desc {
+    font-size: clamp(14px, 1.5vw, 18px);
+    line-height: 1.8;
+    margin-bottom: 50px;
+    opacity: 0.8;
+    font-weight: 200;
+    max-width: 600px;
+  }
+
+  .align-center .hqi-gsap-desc { margin-left: auto; margin-right: auto; }
+  .align-right .hqi-gsap-desc { margin-left: auto; }
+
+  .hqi-gsap-btn {
+    display: inline-block;
+    padding: 15px 55px;
+    border: 1px solid rgba(255,255,255,0.3);
+    background: transparent;
+    color: inherit;
+    text-decoration: none;
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    transition: all 0.4s ease;
+    backdrop-filter: blur(10px);
+  }
+
+  .hqi-gsap-btn:hover {
+    background: #fff;
+    color: #000;
+    border-color: #fff;
+    letter-spacing: 0.5em;
+  }
+
+  /* UI Controls */
+  .hqi-gsap-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 20;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: inherit;
+    opacity: 0.6;
+    transition: 0.3s;
+  }
+  .hqi-gsap-nav:hover { opacity: 1; }
+  .hqi-gsap-nav-line { width: 50px; height: 1px; background: currentColor; }
+
+  .hqi-gsap-prev { left: 50px; }
+  .hqi-gsap-next { right: 50px; flex-direction: row-reverse; }
+
+  .hqi-gsap-dots {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    display: flex;
+    gap: 15px;
+  }
+  .hqi-gsap-dot {
+    width: 8px; height: 8px;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  .hqi-gsap-dot.active { background: currentColor; scale: 1.2; }
+
+  /* Mobile Responsive */
+  @media (max-width: 768px) {
+    /* Uses the setting selected in Schema (80vh or 70vh) */
+    .hqi-gsap-hero-{{ section.id }} { height: {{ section.settings.mobile_height }}; }
+    
+    .hqi-gsap-nav { display: none; } /* Hide text arrows on mobile */
+    .hqi-gsap-container { padding: 0 20px; }
+    .hqi-gsap-content { text-align: center; margin: 0 auto; width: 100%; }
+    
+    .hqi-gsap-heading { margin-bottom: 20px; letter-spacing: 0.15em; }
+    .hqi-gsap-subheading { margin-bottom: 15px; font-size: 11px; }
+    .hqi-gsap-desc { margin: 0 auto 30px auto; max-width: 100%; font-size: 13px; }
+    
+    .hqi-gsap-btn { padding: 12px 30px; }
+    .hqi-gsap-dots { bottom: 30px; }
+  }
+</style>
+
+<div class="hqi-gsap-hero-{{ section.id }}" id="Slider-{{ section.id }}">
+  <div class="hqi-gsap-track">
+    {% for block in section.blocks %}
+      <div class="hqi-gsap-slide {% if forloop.first %}active{% endif %}" data-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+        <div class="hqi-gsap-bg">
+          <picture>
+            {% if block.settings.mobile_image != blank %}
+              <source media="(max-width: 768px)" srcset="{{ block.settings.mobile_image | image_url: width: 800 }}">
+            {% endif %}
+            {% if block.settings.image != blank %}
+              <img src="{{ block.settings.image | image_url: width: 2800 }}" alt="{{ block.settings.heading | escape }}" loading="lazy">
+            {% else %}
+              {{ 'lifestyle-2' | placeholder_svg_tag: 'hqi-placeholder' }}
+            {% endif %}
+          </picture>
+        </div>
+        
+        <div class="hqi-gsap-overlay" style="background: {{ block.settings.overlay_color }}; opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};"></div>
+        
+        <div class="hqi-gsap-container">
+          <div class="hqi-gsap-content align-{{ block.settings.alignment }}">
+            <span class="hqi-gsap-subheading">{{ block.settings.subheading }}</span>
+            <h2 class="hqi-gsap-heading">{{ block.settings.heading }}</h2>
+            <p class="hqi-gsap-desc">{{ block.settings.text }}</p>
+            {% if block.settings.button_label != blank %}
+              <a href="{{ block.settings.button_link | default: '#' }}" class="hqi-gsap-btn">{{ block.settings.button_label }}</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="hqi-gsap-nav hqi-gsap-prev" onclick="moveSlide{{ section.id | replace: '-', '_' }}(-1)">
+    <div class="hqi-gsap-nav-line"></div><span>Prev</span>
+  </div>
+  <div class="hqi-gsap-nav hqi-gsap-next" onclick="moveSlide{{ section.id | replace: '-', '_' }}(1)">
+    <div class="hqi-gsap-nav-line"></div><span>Next</span>
+  </div>
+
+  <div class="hqi-gsap-dots">
+    {% for block in section.blocks %}
+      <div class="hqi-gsap-dot {% if forloop.first %}active{% endif %}" onclick="goToSlide{{ section.id | replace: '-', '_' }}({{ forloop.index0 }})"></div>
+    {% endfor %}
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+<script>
+  (function() {
+    let current = 0;
+    const slides = document.querySelectorAll('#Slider-{{ section.id }} .hqi-gsap-slide');
+    const dots = document.querySelectorAll('#Slider-{{ section.id }} .hqi-gsap-dot');
+    const total = slides.length;
+    let isAnimating = false;
+    const speed = {{ section.settings.transition_speed }};
+
+    function initSlide(idx) {
+      if(slides.length === 0) return;
+      const content = slides[idx].querySelector('.hqi-gsap-content');
+      gsap.set(slides[idx], { visibility: 'visible', opacity: 1 });
+      gsap.set(content, { opacity: 1, y: 0 });
+      gsap.set(slides[idx].querySelector('.hqi-gsap-bg'), { scale: 1 });
+    }
+    
+    initSlide(0);
+
+    window.goToSlide{{ section.id | replace: '-', '_' }} = function(index) {
+      if (isAnimating || index === current) return;
+      isAnimating = true;
+
+      const prevSlide = slides[current];
+      const nextSlide = slides[index];
+      const prevContent = prevSlide.querySelector('.hqi-gsap-content');
+      const nextContent = nextSlide.querySelector('.hqi-gsap-content');
+      const prevBg = prevSlide.querySelector('.hqi-gsap-bg');
+      const nextBg = nextSlide.querySelector('.hqi-gsap-bg');
+
+      dots.forEach(d => d.classList.remove('active'));
+      dots[index].classList.add('active');
+
+      const tl = gsap.timeline({
+        onComplete: () => {
+          prevSlide.classList.remove('active');
+          nextSlide.classList.add('active');
+          gsap.set(prevSlide, { visibility: 'hidden', opacity: 0 });
+          isAnimating = false;
+          current = index;
+        }
+      });
+
+      // Outgoing Slide
+      tl.to(prevContent, { opacity: 0, y: -20, duration: speed * 0.6, ease: 'power2.in' }, 0);
+      tl.to(prevSlide, { opacity: 0, duration: speed, ease: 'power4.inOut' }, 0);
+      tl.to(prevBg, { scale: 1.15, duration: speed, ease: 'power4.inOut' }, 0);
+
+      // Incoming Slide
+      tl.set(nextSlide, { visibility: 'visible', opacity: 0 }, 0);
+      tl.set(nextContent, { opacity: 0, y: 30 }, 0);
+      tl.set(nextBg, { scale: 1.2 }, 0);
+
+      tl.to(nextSlide, { opacity: 1, duration: speed, ease: 'power4.inOut' }, 0);
+      tl.to(nextBg, { scale: 1, duration: speed, ease: 'power4.inOut' }, 0);
+      tl.to(nextContent, { opacity: 1, y: 0, duration: speed * 0.8, ease: 'expo.out' }, speed * 0.4);
+    };
+
+    window.moveSlide{{ section.id | replace: '-', '_' }} = function(dir) {
+      let next = (current + dir + total) % total;
+      goToSlide{{ section.id | replace: '-', '_' }}(next);
+    };
+
+    {% if section.settings.autoplay %}
+      setInterval(() => {
+        if(!isAnimating) moveSlide{{ section.id | replace: '-', '_' }}(1);
+      }, {{ section.settings.autoplay_speed | times: 1000 }});
+    {% endif %}
+  })();
+</script>

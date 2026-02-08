@@ -1,0 +1,384 @@
+{% comment %}
+  Theme Section: Editorial About (GSAP)
+  Description: Artistic layout with overlapping images and huge typography.
+{% endcomment %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<div class="ea-wrapper" style="background-color: {{ section.settings.bg_color }};">
+  <div class="ea-container">
+    
+    <div class="ea-images">
+      <div class="ea-img-back">
+        {% if section.settings.image_1 != blank %}
+          <img src="{{ section.settings.image_1 | image_url: width: 1000 }}" alt="About Background" class="img-b">
+        {% else %}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'img-b placeholder' }}
+        {% endif %}
+      </div>
+
+      <div class="ea-img-front">
+        {% if section.settings.image_2 != blank %}
+          <img src="{{ section.settings.image_2 | image_url: width: 800 }}" alt="About Portrait" class="img-f">
+        {% else %}
+          {{ 'collection-1' | placeholder_svg_tag: 'img-f placeholder' }}
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="ea-typography">
+      
+      <div class="ea-row top">
+        <span class="ea-char">{{ section.settings.text_row_1 }}</span>
+      </div>
+
+      <div class="ea-middle-content">
+        <div class="ea-vertical-line" style="background-color: {{ section.settings.text_color }}"></div>
+        <p class="ea-desc" style="color: {{ section.settings.text_color }}">
+          {{ section.settings.description }}
+        </p>
+      </div>
+
+      <div class="ea-row bottom">
+        <span class="ea-char">{{ section.settings.text_row_2 }}</span>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<style>
+  /* FONTS */
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Montserrat:wght@300;400&display=swap');
+
+  /* --- GLOBAL CONTAINER --- */
+  .ea-wrapper {
+    width: 100%;
+    padding: 60px 0;
+    overflow: hidden;
+    position: relative;
+    background-color: #ffffff; 
+  }
+
+  .ea-container {
+    max-width: 1460px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Desktop: 50/50 Split */
+    gap: 60px;
+    padding: 0px;
+    align-items: center;
+  }
+
+  /* --- LEFT: IMAGES --- */
+  .ea-images {
+    position: relative;
+    height: 750px;
+    width: 100%;
+  }
+
+  .ea-img-back {
+    position: absolute;
+    top: 0;
+    left: -80px; /* Bleed effect */
+    width: 75%;
+    height: 70%;
+    overflow: hidden;
+    z-index: 1;
+    opacity: 0; 
+  }
+
+  .img-b {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%);
+  }
+
+  .ea-img-front {
+    position: absolute;
+    bottom: 50px;
+    right: 20px;
+    width: 60%;
+    height: 55%;
+    z-index: 2;
+    border: 15px solid #fff;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.15);
+    overflow: hidden;
+    opacity: 0; 
+  }
+
+  .img-f {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%);
+  }
+
+  /* --- RIGHT: TYPOGRAPHY --- */
+  .ea-typography {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    padding-left: 20px;
+  }
+
+  .ea-row {
+    display: flex;
+    justify-content: space-between;
+    line-height: 0.85;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .ea-char {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(4rem, 9vw, 11rem); /* Fluid Font Size */
+    color: {{ section.settings.text_color }};
+    display: block;
+    text-transform: uppercase;
+    transform: translateY(100%); 
+    white-space: nowrap;
+  }
+
+  /* Specific spacing adjustments for "AB-OUT" style */
+  .ea-row.top .ea-char { letter-spacing: 0.15em; }
+  .ea-row.bottom { justify-content: flex-end; }
+  .ea-row.bottom .ea-char { letter-spacing: 0.1em; text-align: right; }
+
+  /* MIDDLE SECTION */
+  .ea-middle-content {
+    position: relative;
+    padding: 30px 0;
+    display: flex;
+    align-items: center;
+    min-height: 180px;
+  }
+
+  .ea-vertical-line {
+    position: absolute;
+    left: 20%; 
+    top: -20px;
+    bottom: -20px;
+    width: 1px;
+    background: {{ section.settings.text_color }};
+    height: 0; 
+    z-index: 5;
+  }
+
+  .ea-desc {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    max-width: 320px;
+    margin-left: 30%; /* Push text right of line */
+    text-align: justify;
+    opacity: 0;
+  }
+
+  /* =========================================
+     RESPONSIVE QUERIES
+  ========================================= */
+
+  /* Laptop (Max 1366px) */
+  @media (max-width: 1366px) {
+    .ea-images { height: 600px; }
+    .ea-vertical-line { left: 15%; }
+    .ea-desc { margin-left: 25%; font-size: 0.85rem; }
+  }
+
+  /* Tablet / Vertical Tablet (Max 1024px) */
+  @media (max-width: 1024px) {
+    .ea-container {
+      grid-template-columns: 1fr; /* Stack vertically */
+      gap: 60px;
+    }
+
+    .ea-images {
+      height: 550px;
+      width: 80%;
+      margin: 0 auto;
+    }
+    
+    .ea-img-back { width: 85%; left: -20px; }
+    .ea-img-front { width: 55%; right: -20px; bottom: 0; }
+
+    .ea-typography {
+      padding-left: 0;
+      align-items: center;
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .ea-vertical-line {
+      left: 50%; /* Center line */
+      transform: translateX(-50%);
+    }
+    
+    .ea-desc {
+      margin-left: 0;
+      background: rgba(255,255,255,0.9);
+      padding: 15px;
+      position: relative;
+      z-index: 6;
+      text-align: center;
+      max-width: 400px;
+    }
+
+    .ea-row { justify-content: center; }
+    .ea-row.bottom { justify-content: center; }
+  }
+
+  /* Mobile (Max 768px) */
+  @media (max-width: 768px) {
+    .ea-wrapper { padding: 40px 0; }
+    .ea-container { padding: 0 20px; gap: 40px; }
+    
+    /* Adjust Image collage for phone */
+    .ea-images {
+      height: 400px; /* Smaller height */
+      width: 100%;
+    }
+    
+    .ea-img-back {
+      width: 85%;
+      left: 0;
+      height: 80%;
+    }
+    
+    .ea-img-front {
+      width: 60%;
+      right: 0;
+      bottom: 0;
+      height: 60%;
+      border-width: 8px; /* Thinner border */
+    }
+
+    /* Adjust Typography */
+    .ea-char { font-size: 18vw; /* Huge on mobile */ }
+    
+    .ea-middle-content { min-height: 140px; padding: 20px 0; }
+    .ea-vertical-line { top: 0; bottom: 0; display: none; }
+    .ea-desc { font-size: 0.8rem; line-height: 1.5; padding: 10px; }
+  }
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Initial Entrance Animation
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: ".ea-wrapper",
+      start: "top 70%",
+    }
+  });
+
+  // 1. Reveal Background Image (Slide Right)
+  tl.to(".ea-img-back", { opacity: 1, x: 50, duration: 1.2, ease: "power3.out" })
+    
+  // 2. Reveal Front Image (Slide Up)
+    .to(".ea-img-front", { opacity: 1, y: -20, duration: 1, ease: "power3.out" }, "-=0.8")
+
+  // 3. Reveal Letters (Slide Up)
+    .to(".ea-char", { y: 0, duration: 1, stagger: 0.1, ease: "power4.out" }, "-=1")
+
+  // 4. Draw Line
+    .to(".ea-vertical-line", { height: "130%", duration: 1.5, ease: "power2.inOut" }, "-=1.5")
+
+  // 5. Fade in Description
+    .to(".ea-desc", { opacity: 1, duration: 1 }, "-=0.5");
+
+
+  // --- PARALLAX SCROLL EFFECT ---
+  // When user scrolls, images move at different speeds
+  gsap.to(".ea-img-back img", {
+    yPercent: 20,
+    ease: "none",
+    scrollTrigger: {
+      trigger: ".ea-wrapper",
+      start: "top bottom",
+      end: "bottom top",
+      scrub: true
+    }
+  });
+
+  gsap.to(".ea-img-front", {
+    yPercent: -15, // Moves opposite direction
+    ease: "none",
+    scrollTrigger: {
+      trigger: ".ea-wrapper",
+      start: "top bottom",
+      end: "bottom top",
+      scrub: true
+    }
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Editorial About",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Background Image (Large)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Foreground Image (Small)"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "text",
+      "id": "text_row_1",
+      "label": "Top Row Text",
+      "default": "AB"
+    },
+    {
+      "type": "text",
+      "id": "text_row_2",
+      "label": "Bottom Row Text",
+      "default": "OUT"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Small Description",
+      "default": "When the sun goes down, and the birds leave the sky, look for the hidden beauty that lies within the shadows."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Editorial About"
+    }
+  ]
+}
+{% endschema %}

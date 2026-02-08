@@ -1,0 +1,332 @@
+{% comment %}
+  Theme Section: Editorial Zig-Zag (GSAP)
+  Description: Alternating Text and Image layout with script overlay.
+{% endcomment %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<div class="zz-wrapper" style="background-color: {{ section.settings.bg_color }}; color: {{ section.settings.text_color }};">
+  <div class="zz-container">
+    
+    {% for block in section.blocks %}
+      <div class="zz-row {% if block.settings.layout == 'image_left' %}reverse{% endif %}">
+        
+        <div class="zz-text-col">
+          <div class="zz-text-inner">
+            {% if block.settings.subheading != blank %}
+              <h4 class="zz-subheading">{{ block.settings.subheading }}</h4>
+            {% endif %}
+            
+            <h2 class="zz-heading">{{ block.settings.heading }}</h2>
+            
+            <div class="zz-desc">
+              {{ block.settings.description }}
+            </div>
+
+            {% if block.settings.link_text != blank %}
+              <a href="{{ block.settings.link_url }}" class="zz-link">
+                {{ block.settings.link_text }}
+              </a>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="zz-image-col">
+          <div class="zz-image-wrapper">
+            {% if block.settings.image != blank %}
+              <img src="{{ block.settings.image | image_url: width: 1200 }}" alt="{{ block.settings.heading }}" class="zz-img">
+            {% else %}
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'zz-img placeholder' }}
+            {% endif %}
+            
+            {% if block.settings.signature_text != blank %}
+              <span class="zz-signature">{{ block.settings.signature_text }}</span>
+            {% endif %}
+          </div>
+        </div>
+
+      </div>
+    {% endfor %}
+
+  </div>
+</div>
+
+<style>
+  /* FONTS */
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Montserrat:wght@300;400;500&family=Great+Vibes&display=swap');
+
+.zz-wrapper {
+    width: 100%;
+    padding: 60px 0;
+    overflow: hidden;
+    border-top: 1px solid black;
+}
+
+  .zz-container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 50px; /* Space between rows */
+  }
+
+  /* --- ROW LAYOUT --- */
+  .zz-row {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr; /* Image side is slightly wider */
+    gap: 80px;
+    align-items: center;
+  }
+
+  /* Reverse layout for Image Left */
+  .zz-row.reverse {
+    grid-template-columns: 1.2fr 1fr;
+    direction: rtl; /* Trick to swap columns visual order */
+  }
+  
+  /* Reset direction for content inside reversed row */
+  .zz-row.reverse .zz-text-col,
+  .zz-row.reverse .zz-image-col {
+    text-align: right;
+  }
+
+  /* --- TEXT COLUMN --- */
+  .zz-text-col {
+    padding: 0 20px;
+  }
+
+  .zz-subheading {
+    font-family: 'Cinzel', serif;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    opacity: 0.8;
+  }
+
+  .zz-heading {
+    font-family: 'Cinzel', serif;
+    font-size: 2.5rem;
+    line-height: 1.2;
+    margin-bottom: 30px;
+    font-weight: 600;
+  }
+
+  .zz-desc {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.8;
+    margin-bottom: 40px;
+    opacity: 0.7;
+    max-width: 450px;
+  }
+
+  .zz-link {
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 3px;
+    color: inherit;
+    transition: opacity 0.3s;
+  }
+  .zz-link:hover { opacity: 0.6; }
+
+  /* --- IMAGE COLUMN --- */
+  .zz-image-col {
+    position: relative;
+  }
+
+  .zz-image-wrapper {
+    width: 100%;
+    height: 600px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .zz-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.5s ease;
+  }
+
+  .zz-img.placeholder { background: #eee; }
+
+  /* Signature Script Overlay */
+  .zz-signature {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-5deg);
+    font-family: 'Great Vibes', cursive; /* Script Font */
+    font-size: 5rem;
+    color: #fff;
+    text-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    white-space: nowrap;
+    z-index: 2;
+  }
+
+  /* --- RESPONSIVE --- */
+  @media (max-width: 900px) {
+    .zz-container { gap: 30px; padding: 0 20px; }
+    
+    .zz-row, .zz-row.reverse {
+      grid-template-columns: 1fr; /* Stack */
+      direction: ltr; /* Reset direction */
+      gap: 40px;
+    }
+
+    /* On Mobile, Text always below Image? Or Image below Text? 
+       Usually Text top, Image bottom looks good */
+    .zz-row { display: flex; flex-direction: column-reverse; }
+    .zz-row.reverse { flex-direction: column-reverse; }
+
+    .zz-image-wrapper { height: 400px; }
+    
+    .zz-heading { font-size: 2rem; }
+    .zz-signature { font-size: 3.5rem; bottom: 20px; }
+  }
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  gsap.registerPlugin(ScrollTrigger);
+
+  const rows = document.querySelectorAll('.zz-row');
+
+  rows.forEach((row) => {
+    // 1. Text Animation (Slide Up)
+    gsap.from(row.querySelector('.zz-text-inner'), {
+      y: 50,
+      opacity: 0,
+      duration: 1,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: row,
+        start: "top 75%"
+      }
+    });
+
+    // 2. Image Reveal (Scale Down effect)
+    gsap.fromTo(row.querySelector('.zz-img'), 
+      { scale: 1.2 },
+      { 
+        scale: 1, 
+        duration: 1.5, 
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: row,
+          start: "top 80%"
+        }
+      }
+    );
+
+    // 3. Signature Float
+    const sig = row.querySelector('.zz-signature');
+    if(sig) {
+      gsap.from(sig, {
+        y: 50,
+        opacity: 0,
+        duration: 1.2,
+        delay: 0.3,
+        ease: "back.out(1.7)",
+        scrollTrigger: {
+          trigger: row,
+          start: "top 75%"
+        }
+      });
+    }
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Editorial Zig-Zag",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#000000"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "content_row",
+      "name": "Content Row",
+      "settings": [
+        {
+          "type": "select",
+          "id": "layout",
+          "label": "Layout Direction",
+          "options": [
+            { "value": "text_left", "label": "Text Left - Image Right" },
+            { "value": "image_left", "label": "Image Left - Text Right" }
+          ],
+          "default": "text_left"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "signature_text",
+          "label": "Script Overlay Text",
+          "default": "Paraboot",
+          "info": "Appears over the image in script font"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subheading",
+          "default": "New Arrivals: Paraboot Footwear"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Classic Elegance"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Since day one, Paraboot has been the footwear brand of choice. The overwhelming amount of messages we have received..."
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link Text",
+          "default": "Explore Collection"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Editorial Zig-Zag",
+      "blocks": [
+        { "type": "content_row", "settings": { "layout": "text_left" } },
+        { "type": "content_row", "settings": { "layout": "image_left" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

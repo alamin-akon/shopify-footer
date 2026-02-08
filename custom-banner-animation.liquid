@@ -1,0 +1,543 @@
+{% comment %}
+  Theme Section: Vertical Full-Page Slider (Fixed Content)
+  Description: All elements (BG, Text, Image) move together as one unit.
+{% endcomment %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<div class="vertical-slider-container" id="vslider-{{ section.id }}" style="--mobile-h: {{ section.settings.mobile_height }}">
+  {% for block in section.blocks %}
+    <div class="v-slide section-{{ block.id }}">
+      
+      <div class="v-slide-inner">
+        
+        <div class="v-bg">
+           <picture>
+             {% if block.settings.mobile_bg_image != blank %}
+               <source media="(max-width: 768px)" srcset="{{ block.settings.mobile_bg_image | image_url: width: 800 }}">
+             {% endif %}
+             
+             {% if block.settings.bg_image != blank %}
+               <img src="{{ block.settings.bg_image | image_url: width: 2000 }}" class="v-bg-img" alt="Background">
+             {% else %}
+               {{ 'lifestyle-1' | placeholder_svg_tag: 'v-bg-img placeholder' }}
+             {% endif %}
+           </picture>
+           
+          <div class="v-overlay" style="background: {{ section.settings.overlay_color }}; opacity: {{ section.settings.overlay_opacity }};"></div>
+        </div>
+
+        <div class="v-content">
+          <div class="v-text-col">
+            <span class="v-subtitle">{{ block.settings.subtitle }}</span>
+            <h2 class="v-title">{{ block.settings.title }}</h2>
+            <p class="v-desc">{{ block.settings.description }}</p>
+            {% if block.settings.btn_label != blank %}
+              <a href="{{ block.settings.btn_link }}" class="v-btn">{{ block.settings.btn_label }}</a>
+            {% endif %}
+          </div>
+
+          <div class="v-image-col">
+             {% if block.settings.fg_image != blank %}
+              <img src="{{ block.settings.fg_image | image_url: width: 800 }}" class="v-fg-img" alt="Foreground">
+            {% else %}
+              {{ 'product-1' | placeholder_svg_tag: 'v-fg-img placeholder' }}
+            {% endif %}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  {% endfor %}
+</div>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Montserrat:wght@300;400;500&display=swap');
+
+  /* Container pins everything */
+  .vertical-slider-container {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Each Slide */
+  .v-slide {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Important: This ensures background and content are locked together */
+    z-index: 1; 
+  }
+
+  .v-slide-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  /* Background Layer */
+  .v-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+
+  .v-bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .v-overlay {
+    position: absolute;
+    inset: 0;
+  }
+
+  /* Content Grid */
+  .v-content {
+    position: relative;
+    z-index: 2; /* Sits on top of BG */
+    width: 100%;
+    height: 100%;
+    max-width: 1620px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 0 50px;
+    gap: 50px;
+  }
+
+  /* Text Styling */
+  .v-text-col {
+    color: {{ section.settings.text_color }};
+  }
+
+  .v-subtitle {
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    display: block;
+    margin-bottom: 20px;
+  }
+
+  .v-title {
+    font-family: 'Cinzel', serif;
+    font-size: 4rem;
+    line-height: 1.1;
+    margin-bottom: 30px;
+    color: white;
+  }
+
+  .v-desc {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    max-width: 500px;
+  }
+
+  .v-btn {
+    display: inline-block;
+    padding: 15px 40px;
+    background: white;
+    color: black;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 2px;
+    font-size: 0.8rem;
+  }
+
+  /* Right Image Styling */
+  .v-image-col {
+    height: 60vh;
+    border-radius: 15px;
+    overflow: hidden;
+  }
+
+  .v-fg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+  }
+
+/* ===== Responsive CSS (paste this at the END of your <style> block) ===== */
+
+/* Better mobile viewport handling */
+.vertical-slider-container {
+  height: 100svh; /* mobile safe viewport */
+  min-height: 100vh;
+}
+
+/* Large desktops */
+@media (max-width: 1400px) {
+  .v-content {
+    max-width: 1200px;
+    padding: 0 40px;
+    gap: 40px;
+  }
+  .v-title {
+    font-size: 3.5rem;
+  }
+  .v-desc {
+    font-size: 1.05rem;
+    max-width: 520px;
+  }
+  .v-image-col {
+    height: 55vh;
+  }
+}
+
+/* Laptops */
+@media (max-width: 1200px) {
+  .v-content {
+    max-width: 1050px;
+    padding: 0 32px;
+    gap: 32px;
+  }
+  .v-title {
+    font-size: 3.1rem;
+  }
+  .v-desc {
+    font-size: 1rem;
+    max-width: 480px;
+  }
+  .v-image-col {
+    height: 50vh;
+    border-radius: 12px;
+  }
+  .v-btn {
+    padding: 14px 34px;
+  }
+}
+
+/* Tablets / small laptops */
+@media (max-width: 1024px) {
+  .v-content {
+    max-width: 900px;
+    padding: 0 24px;
+    gap: 24px;
+  }
+  .v-title {
+    font-size: 2.7rem;
+    margin-bottom: 22px;
+  }
+  .v-subtitle {
+    margin-bottom: 14px;
+    letter-spacing: 0.16em;
+  }
+  .v-desc {
+    font-size: 0.98rem;
+    margin-bottom: 28px;
+  }
+  .v-image-col {
+    height: 45vh;
+  }
+}
+
+/* Your existing breakpoint improved */
+@media (max-width: 900px) {
+  .v-content {
+    grid-template-columns: 1fr;
+    align-content: center;
+    justify-items: center;
+    text-align: center;
+    padding: 0 18px;
+    gap: 18px;
+  }
+
+  .v-text-col {
+    width: 100%;
+    max-width: 640px;
+  }
+
+  .v-title {
+    font-size: 2.4rem;
+  }
+
+  .v-desc {
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .v-image-col {
+    width: 100%;
+    max-width: 640px;
+    height: 38vh;
+    margin-top: 10px;
+    border-radius: 12px;
+  }
+}
+
+/* Phones */
+@media (max-width: 768px) {
+  .v-content {
+    padding: 0 14px;
+    gap: 14px;
+  }
+
+  .v-subtitle {
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+  }
+
+  .v-title {
+    font-size: 2rem;
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+
+  .v-desc {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    margin-bottom: 22px;
+  }
+
+  .v-btn {
+    padding: 12px 28px;
+    font-size: 0.75rem;
+    letter-spacing: 1.6px;
+  }
+
+  .v-image-col {
+    height: 32vh;
+  }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  .v-content {
+    padding: 0 12px;
+    gap: 12px;
+  }
+
+  .v-subtitle {
+    font-size: 0.74rem;
+  }
+
+  .v-title {
+    font-size: 1.7rem;
+  }
+
+  .v-desc {
+    font-size: 0.92rem;
+    margin-bottom: 18px;
+  }
+
+  .v-btn {
+    width: 100%;
+    max-width: 320px;
+    padding: 12px 18px;
+  }
+
+  .v-image-col {
+    height: 28vh;
+    border-radius: 10px;
+  }
+}
+
+/* Ultra small screens */
+@media (max-width: 360px) {
+  .v-title {
+    font-size: 1.55rem;
+  }
+  .v-image-col {
+    height: 26vh;
+  }
+}
+
+/* slides stack + smooth */
+.vertical-slider-container{
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+.vertical-slider-container .v-slide{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.vertical-slider-container .v-slide-inner{
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.vertical-slider-container .v-slide,
+.vertical-slider-container .v-slide-inner,
+.vertical-slider-container .v-bg-img,
+.vertical-slider-container .v-content{
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+
+/* --- RESPONSIVE STYLES (Paste at the bottom of your style tag) --- */
+
+@media (max-width: 1024px) {
+  .v-content {
+    grid-template-columns: 1fr; /* Stack vertically on tablet/mobile */
+    text-align: center;
+    justify-content: center;
+    padding: 0 30px;
+    gap: 30px;
+  }
+  
+  .v-image-col {
+    display: none; /* Hide side image on mobile to save space, or set height: 300px to show */
+  }
+  
+  .v-title { font-size: 3rem; }
+}
+
+@media (max-width: 768px) {
+  /* Apply the dynamic mobile height (80vh or 70vh) */
+  .vertical-slider-container {
+    height: var(--mobile-h) !important; 
+  }
+  
+  .v-content {
+    padding: 0 20px;
+    gap: 20px;
+  }
+
+  .v-title {
+    font-size: 2.5rem; /* Smaller font for mobile */
+    margin-bottom: 15px;
+  }
+  
+  .v-desc {
+    font-size: 0.9rem;
+    margin-bottom: 25px;
+  }
+  
+  .v-btn {
+    padding: 12px 30px;
+    font-size: 0.7rem;
+  }
+  
+  /* Ensure image covers full area on mobile */
+  .v-bg-img {
+    object-position: center;
+  }
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  gsap.registerPlugin(ScrollTrigger);
+
+  const slides = gsap.utils.toArray(".v-slide");
+
+  // Create one timeline for the whole section
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: ".vertical-slider-container",
+      pin: true,                 // Pin the container
+      start: "top top",
+      end: "+=" + slides.length * 100 + "%", // Duration based on number of slides
+      scrub: 1,                  // Link animation to scrollbar
+      snap: 1 / (slides.length - 1) // Snap to each slide
+    }
+  });
+
+  slides.forEach((slide, i) => {
+    if (i === 0) return; // Skip first slide (already visible)
+
+    // Move each next slide from bottom to top
+    tl.fromTo(
+      slide,
+      { yPercent: 100 },
+      { yPercent: 0, ease: "none" }
+    );
+  });
+});
+
+</script>
+
+
+{% schema %}
+{
+  "name": "Vertical Full Page Slide",
+  "settings": [
+    {
+      "type": "select",
+      "id": "mobile_height",
+      "label": "Mobile Section Height",
+      "options": [
+        { "value": "100vh", "label": "Full Screen (100vh)" },
+        { "value": "80vh", "label": "80% Screen (80vh)" },
+        { "value": "70vh", "label": "70% Screen (70vh)" }
+      ],
+      "default": "80vh"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "label": "Overlay Opacity",
+      "default": 0.3
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        { "type": "image_picker", "id": "bg_image", "label": "Desktop Background Image" },
+        { "type": "image_picker", "id": "mobile_bg_image", "label": "Mobile Background Image (Optional)" },
+        { "type": "image_picker", "id": "fg_image", "label": "Right Side Image" },
+        { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "COLLECTION" },
+        { "type": "text", "id": "title", "label": "Heading", "default": "Your Title" },
+        { "type": "textarea", "id": "description", "label": "Description", "default": "Description here." },
+        { "type": "text", "id": "btn_label", "label": "Button Label", "default": "Explore" },
+        { "type": "url", "id": "btn_link", "label": "Button Link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Vertical Full Page Slide",
+      "blocks": [
+        { "type": "slide" },
+        { "type": "slide" }
+      ]
+    }
+  ]
+}
+{% endschema %}

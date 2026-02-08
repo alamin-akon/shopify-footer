@@ -1,0 +1,457 @@
+{% comment %}
+  Theme Section: High Fashion Hero (W.Concept Style)
+  Description: Huge typography with parallax scrolling and watermark text.
+{% endcomment %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<div class="fh-section-wrapper" style="background-color: {{ section.settings.bg_color }};">
+  
+  <div class="fh-container">
+    
+    <div class="fh-image-layer">
+      <picture>
+        {% if section.settings.mobile_image != blank %}
+          <source media="(max-width: 768px)" srcset="{{ section.settings.mobile_image | image_url: width: 800 }}">
+        {% endif %}
+        {% if section.settings.image != blank %}
+          <img src="{{ section.settings.image | image_url: width: 2400 }}" alt="Fashion Hero" class="fh-img">
+        {% else %}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'fh-img placeholder' }}
+        {% endif %}
+      </picture>
+      <div class="fh-overlay"></div>
+    </div>
+
+    <div class="fh-content-layer">
+      
+      <div class="fh-watermark-text">{{ section.settings.watermark_text }}</div>
+
+      <div class="fh-headline-wrapper">
+        <h1 class="fh-headline">
+          <span class="fh-line line-1">{{ section.settings.heading_line_1 }}</span>
+          <br>
+          <span class="fh-line line-2">{{ section.settings.heading_line_2 }}</span>
+          <br>
+          <span class="fh-line line-3">{{ section.settings.heading_line_3 }}</span>
+        </h1>
+      </div>
+
+      {% if section.settings.btn_label != blank %}
+        <div class="fh-btn-wrapper">
+          <a href="{{ section.settings.btn_link }}" class="fh-btn">
+            {{ section.settings.btn_label }}
+          </a>
+        </div>
+      {% endif %}
+
+      <div class="fh-decor-scroll">
+        <span class="scroll-txt">SCROLL</span>
+        <div class="scroll-line"></div>
+      </div>
+
+      <div class="fh-decor-counter">
+        <span class="current">01</span><span class="divider">/</span><span class="total">04</span>
+      </div>
+
+      <div class="fh-socials">
+        <span class="icon">L</span>
+        <span class="icon">O</span>
+        <span class="icon">V</span>
+        <span class="icon">F</span>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<style>
+  /* FONTS */
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600;900&display=swap');
+
+  .fh-section-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* Full Screen */
+    overflow: hidden;
+    color: #000; /* Default Black Text */
+  }
+
+  .fh-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* --- IMAGE LAYER --- */
+  .fh-image-layer {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 120%; /* Taller for Parallax */
+    z-index: 1;
+  }
+
+  .fh-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center; /* Adjust focus */
+    /* Grayscale filter to match Black & White request */
+    filter: grayscale(100%) contrast(1.1); 
+  }
+
+  .fh-img.placeholder {
+    filter: grayscale(100%);
+    background: #e0e0e0;
+  }
+
+  /* Fade out overlay at bottom */
+  .fh-overlay {
+    position: absolute;
+    bottom: 0; left: 0; width: 100%; height: 50%;
+    background: linear-gradient(to top, #ffffff 0%, transparent 100%);
+    opacity: 0.8;
+  }
+
+  /* --- CONTENT LAYER --- */
+  .fh-content-layer {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    max-width: 1680px;
+    margin: 0 auto;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* Watermark Text (Huge Background Text) */
+  .fh-watermark-text {
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: 15vw; /* Responsive huge size */
+    color: rgba(0,0,0,0.03); /* Very faint */
+    white-space: nowrap;
+    z-index: -1; /* Behind main text */
+    pointer-events: none;
+  }
+
+  /* Main Headline */
+  .fh-headline-wrapper {
+    position: relative;
+    z-index: 2;
+    margin-bottom: 40px;
+  }
+
+  .fh-headline {
+    font-family: 'Montserrat', sans-serif; /* Using Montserrat for that bold modern look in ref image */
+    font-weight: 900;
+    font-size: 6rem;
+    line-height: 0.9;
+    text-transform: uppercase;
+    color: #000;
+    margin: 0;
+  }
+
+  /* Specific Styling for Lines to match reference */
+  .fh-line {
+    display: inline-block; /* Needed for animation */
+  }
+
+  .line-1 { font-size: 5rem; letter-spacing: -2px; }
+  .line-2 { 
+    font-family: 'Cinzel', serif; /* Mix font for style */
+    font-size: 8rem; 
+    font-weight: 400;
+    display: block;
+    margin-left: 100px; /* Indent */
+  }
+  .line-3 { font-size: 6rem; font-weight: 900; display: block; text-align: right; }
+
+  /* Button */
+  .fh-btn-wrapper {
+    position: absolute;
+    left: 100px;
+    bottom: 25%;
+  }
+
+  .fh-btn {
+    display: inline-block;
+    padding: 15px 40px;
+    border: 2px solid #000;
+    color: #000;
+    text-transform: uppercase;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    position: relative;
+    transition: all 0.3s;
+    background: transparent;
+  }
+
+  /* Minimalist button hover style */
+  .fh-btn:hover {
+    background: #000;
+    color: #fff;
+  }
+  
+  /* Decorative Line on Button */
+  .fh-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -60px;
+    width: 40px;
+    height: 1px;
+    background: #000;
+  }
+
+  /* --- DECOR ELEMENTS --- */
+  
+  /* Scroll Indicator */
+  .fh-decor-scroll {
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .scroll-txt {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 60px;
+    background: #000;
+  }
+
+  /* Counter (01/04) */
+  .fh-decor-counter {
+    position: absolute;
+    top: 50%;
+    right: 40px;
+    transform: translateY(-50%);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    display: none;
+  }
+  
+  .fh-decor-counter .divider {
+    transform: rotate(90deg);
+    display: block;
+    width: 20px;
+    height: 1px;
+    background: #000;
+    margin: 10px 0;
+  }
+
+  /* Social Icons (Top Right) */
+  .fh-socials {
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    display: flex;
+    gap: 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+  }
+  .icon { cursor: pointer; }
+
+  /* --- RESPONSIVE --- */
+  @media (max-width: 900px) {
+    .fh-headline {
+      font-size: 3.5rem;
+      text-align: center;
+    }
+    
+    .line-1, .line-2, .line-3 {
+      font-size: inherit;
+      margin: 0;
+      text-align: center;
+      display: block;
+    }
+    
+    .fh-watermark-text {
+      top: 10%;
+      font-size: 20vw;
+    }
+
+    .fh-btn-wrapper {
+      position: relative;
+      left: auto;
+      bottom: auto;
+      text-align: center;
+      margin-top: 30px;
+    }
+    
+    .fh-btn::before { display: none; } /* Hide line on mobile */
+
+    .fh-decor-counter, .fh-decor-scroll { display: none; } /* Simplify on mobile */
+    
+    .fh-content-layer {
+      align-items: center; /* Center everything */
+      text-align: center;
+    }
+  }
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  gsap.registerPlugin(ScrollTrigger);
+
+  // 1. Initial Load Animation (Entrance)
+  const tl = gsap.timeline();
+
+  // Reveal Image
+  tl.fromTo(".fh-img", { scale: 1.2, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.5, ease: "power2.out" });
+
+  // Stagger Reveal Text lines
+  tl.from(".fh-line", {
+    y: 100,
+    opacity: 0,
+    duration: 1,
+    stagger: 0.2,
+    ease: "power3.out"
+  }, "-=1.0");
+
+  // Reveal Button & Watermark
+  tl.from([".fh-btn-wrapper", ".fh-watermark-text"], {
+    y: 50,
+    opacity: 0,
+    duration: 1,
+    ease: "power2.out"
+  }, "-=0.5");
+
+
+  // 2. Scroll Parallax Animation
+  // Move Image Slower than scroll
+  gsap.to(".fh-img", {
+    yPercent: 20, // Move down 20%
+    ease: "none",
+    scrollTrigger: {
+      trigger: ".fh-section-wrapper",
+      start: "top top",
+      end: "bottom top",
+      scrub: true
+    }
+  });
+
+  // Move Watermark Text Sideways on Scroll
+  gsap.to(".fh-watermark-text", {
+    xPercent: 10, // Move right slowly
+    opacity: 0,   // Fade out
+    ease: "none",
+    scrollTrigger: {
+      trigger: ".fh-section-wrapper",
+      start: "top top",
+      end: "bottom top",
+      scrub: true
+    }
+  });
+
+  // Move Headlines Faster (Foreground effect)
+  gsap.to(".fh-headline", {
+    y: -100,
+    ease: "none",
+    scrollTrigger: {
+      trigger: ".fh-section-wrapper",
+      start: "top top",
+      end: "bottom top",
+      scrub: true
+    }
+  });
+
+});
+</script>
+
+{% schema %}
+{
+  "name": "Fashion Editorial Hero",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Desktop Image (Landscape)"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile Image (Portrait)"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "text",
+      "id": "watermark_text",
+      "label": "Background Watermark",
+      "default": "FOR MEN"
+    },
+    {
+      "type": "text",
+      "id": "heading_line_1",
+      "label": "Heading Line 1",
+      "default": "ADDICTED"
+    },
+    {
+      "type": "text",
+      "id": "heading_line_2",
+      "label": "Heading Line 2 (Serif)",
+      "default": "TO"
+    },
+    {
+      "type": "text",
+      "id": "heading_line_3",
+      "label": "Heading Line 3 (Bold)",
+      "default": "FASHION."
+    },
+    {
+      "type": "text",
+      "id": "btn_label",
+      "label": "Button Label",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "btn_link",
+      "label": "Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Fashion Editorial Hero"
+    }
+  ]
+}
+{% endschema %}
