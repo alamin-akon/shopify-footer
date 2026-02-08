@@ -1,0 +1,2078 @@
+{% comment %} {{ 'footer.css' | asset_url | stylesheet_tag }}
+{%- if section.settings.show_currency_selector
+  or section.settings.show_country_selector
+  or section.settings.show_language_selector
+-%}
+  <script src="{{ 'localization-form.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+<m-footer class="m-footer m:block" data-section-type="footer" data-section-id="{{ section.id }}">
+  {% render 'footer-blocks',
+    blocks: section.blocks,
+    bordered: section.settings.bordered,
+    container: section.settings.container
+  %}
+  {% render 'footer-design', container: section.settings.container %}
+</m-footer>
+<script src="{{ 'footer.js' | asset_url }}" defer="defer"></script>
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "[Watch tutorial](https://foxecom.link/abZ4Ot)"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "footer"
+    },
+    {
+      "type": "select",
+      "id": "design",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "footer-1",
+          "label": "Layout 1"
+        },
+        {
+          "value": "footer-2",
+          "label": "Layout 2"
+        },
+        {
+          "value": "footer-3",
+          "label": "Layout 3"
+        }
+      ],
+      "default": "footer-1"
+    },
+    {
+      "type": "select",
+      "id": "container",
+      "label": "Container type",
+      "default": "container-fluid",
+      "options": [
+        {
+          "value": "container-fluid",
+          "label": "Default"
+        },
+        {
+          "value": "container-full",
+          "label": "Full width"
+        },
+        {
+          "value": "container",
+          "label": "Use container box"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "bordered",
+      "label": "Block bordered",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "copyright",
+      "label": "Copyright text",
+      "default": "&copy; minimog 2021"
+    },
+    {
+      "type": "header",
+      "content": "Addons"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_country_selector",
+      "label": "Show country/region selector",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_currency_selector",
+      "label": "Show currency selector",
+      "default": false,
+      "info": "[Watch tutorial](https://foxecom.link/TsDtIw)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_language_selector",
+      "label": "Show language selector",
+      "default": false,
+      "info": "[Watch tutorial](https://foxecom.link/eBEvt2)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social_links",
+      "label": "Show social icons",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Follow on Shop",
+      "info": "Display follow button for your storefront on the Shop app. [Learn more](https://help.shopify.com/manual/online-store/themes/customizing-themes/follow-on-shop)"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_follow_on_shop",
+      "default": true,
+      "label": "Enable Follow on Shop"
+    },
+    {
+      "type": "header",
+      "content": "Payment methods"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "image_custom_payment",
+      "label": "Payment icons by image",
+      "info": "Leave blank to use icons by Payment methods"
+    },
+    {
+      "type": "number",
+      "id": "payment_icons_width",
+      "label": "Image width (px)",
+      "default": 300
+    },
+    {
+      "type": "header",
+      "content": "Footer bottom"
+    },
+    {
+      "type": "color_scheme",
+      "id": "footer_bottom_color_scheme",
+      "label": "Color scheme",
+      "default": "footer"
+    },
+    {
+      "type": "link_list",
+      "id": "footer_bottom_menu",
+      "label": "Menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_menu_item_divider",
+      "label": "Show menu item divider"
+    }
+  ],
+  "max_blocks": 5,
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Menu",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Footer menu",
+          "default": "main-menu"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Service",
+          "info": "Leave blank to use menu title"
+        },
+        {
+          "type": "select",
+          "id": "width",
+          "label": "Container width",
+          "default": "25%",
+          "options": [
+            {
+              "value": "16%",
+              "label": "16%"
+            },
+            {
+              "value": "25%",
+              "label": "25%"
+            },
+            {
+              "value": "33%",
+              "label": "33%"
+            },
+            {
+              "value": "50%",
+              "label": "50%"
+            },
+            {
+              "value": "66%",
+              "label": "66%"
+            },
+            {
+              "value": "75%",
+              "label": "75%"
+            },
+            {
+              "value": "83%",
+              "label": "83%"
+            },
+            {
+              "value": "100%",
+              "label": "100%"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Mobile settings"
+        },
+        {
+          "type": "checkbox",
+          "id": "order_first",
+          "label": "Order first",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "open_default",
+          "label": "Open by default",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "our_store",
+      "name": "About",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Our store"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Find a location nearest you.</p>"
+        },
+        {
+          "type": "header",
+          "content": "Contact information",
+          "info": "Go to \"Theme settings > Store contact\" to update these information."
+        },
+        {
+          "type": "checkbox",
+          "id": "show_email",
+          "label": "Show email",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_phone",
+          "label": "Show phone number",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_socials_link",
+          "label": "Show social icons",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "width",
+          "label": "Container width",
+          "default": "25%",
+          "options": [
+            {
+              "value": "16%",
+              "label": "16%"
+            },
+            {
+              "value": "25%",
+              "label": "25%"
+            },
+            {
+              "value": "33%",
+              "label": "33%"
+            },
+            {
+              "value": "50%",
+              "label": "50%"
+            },
+            {
+              "value": "66%",
+              "label": "66%"
+            },
+            {
+              "value": "75%",
+              "label": "75%"
+            },
+            {
+              "value": "83%",
+              "label": "83%"
+            },
+            {
+              "value": "100%",
+              "label": "100%"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Mobile settings"
+        },
+        {
+          "type": "checkbox",
+          "id": "order_first",
+          "label": "Order first",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "open_default",
+          "label": "Open by default",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Subscribe"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Enter your email below to be the first to know about new collections and product launches."
+        },
+        {
+          "type": "text",
+          "id": "email_placeholder",
+          "label": "Email placeholder",
+          "default": "Enter your email"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_icon_input",
+          "label": "Show icon input",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "info": "Leave it blank to use icon"
+        },
+        {
+          "type": "select",
+          "id": "button_position",
+          "label": "Button position",
+          "options": [
+            {
+              "value": "inline",
+              "label": "Same line input field"
+            },
+            {
+              "value": "below",
+              "label": "Under input field"
+            }
+          ],
+          "default": "inline",
+          "info": "Only work with bordered form style"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "options": [
+            {
+              "value": "m-button--primary",
+              "label": "Primary button"
+            },
+            {
+              "value": "m-button--secondary",
+              "label": "Secondary button"
+            },
+            {
+              "value": "m-button--blank",
+              "label": "Plain button"
+            }
+          ],
+          "default": "m-button--blank"
+        },
+        {
+          "type": "select",
+          "id": "form_style",
+          "label": "Form style",
+          "default": "bordered",
+          "options": [
+            {
+              "value": "bordered",
+              "label": "Bordered"
+            },
+            {
+              "value": "minimal",
+              "label": "Minimal"
+            }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "show_social",
+          "label": "Show social link",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_agree_checkbox",
+          "label": "Show \"Terms & conditions\" checkbox",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "width",
+          "label": "Container width",
+          "default": "25%",
+          "options": [
+            {
+              "value": "16%",
+              "label": "16%"
+            },
+            {
+              "value": "25%",
+              "label": "25%"
+            },
+            {
+              "value": "33%",
+              "label": "33%"
+            },
+            {
+              "value": "50%",
+              "label": "50%"
+            },
+            {
+              "value": "66%",
+              "label": "66%"
+            },
+            {
+              "value": "75%",
+              "label": "75%"
+            },
+            {
+              "value": "83%",
+              "label": "83%"
+            },
+            {
+              "value": "100%",
+              "label": "100%"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Mobile settings"
+        },
+        {
+          "type": "checkbox",
+          "id": "order_first",
+          "label": "Order first",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "open_default",
+          "label": "Open by default",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "custom_text",
+      "name": "Custom content",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Custom text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "image_max",
+          "label": "Image max-width (px)",
+          "default": "200px"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Content",
+          "default": "<p>Enter your email below to be the first to know about new collections and product launches.</p>"
+        },
+        {
+          "type": "select",
+          "id": "width",
+          "label": "Container width",
+          "default": "25%",
+          "options": [
+            {
+              "value": "16%",
+              "label": "16%"
+            },
+            {
+              "value": "25%",
+              "label": "25%"
+            },
+            {
+              "value": "33%",
+              "label": "33%"
+            },
+            {
+              "value": "50%",
+              "label": "50%"
+            },
+            {
+              "value": "66%",
+              "label": "66%"
+            },
+            {
+              "value": "75%",
+              "label": "75%"
+            },
+            {
+              "value": "83%",
+              "label": "83%"
+            },
+            {
+              "value": "100%",
+              "label": "100%"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Mobile settings"
+        },
+        {
+          "type": "checkbox",
+          "id": "order_first",
+          "label": "Order first",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "open_default",
+          "label": "Open by default",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "custom_html",
+      "name": "Custom HTML",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Custom text"
+        },
+        {
+          "type": "liquid",
+          "id": "html",
+          "label": "HTML",
+          "info": "Liquid code supported"
+        },
+        {
+          "type": "select",
+          "id": "width",
+          "label": "Container width",
+          "default": "25%",
+          "options": [
+            {
+              "value": "16%",
+              "label": "16%"
+            },
+            {
+              "value": "25%",
+              "label": "25%"
+            },
+            {
+              "value": "33%",
+              "label": "33%"
+            },
+            {
+              "value": "50%",
+              "label": "50%"
+            },
+            {
+              "value": "66%",
+              "label": "66%"
+            },
+            {
+              "value": "75%",
+              "label": "75%"
+            },
+            {
+              "value": "83%",
+              "label": "83%"
+            },
+            {
+              "value": "100%",
+              "label": "100%"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Mobile settings"
+        },
+        {
+          "type": "checkbox",
+          "id": "order_first",
+          "label": "Order first",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "open_default",
+          "label": "Open by default",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "spacing",
+      "name": "Spacing",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Use this block to make a spacing between columns"
+        },
+        {
+          "type": "select",
+          "id": "width",
+          "label": "Container width",
+          "default": "25%",
+          "options": [
+            {
+              "value": "16%",
+              "label": "16%"
+            },
+            {
+              "value": "20%",
+              "label": "20%"
+            },
+            {
+              "value": "25%",
+              "label": "25%"
+            },
+            {
+              "value": "33%",
+              "label": "33%"
+            },
+            {
+              "value": "50%",
+              "label": "50%"
+            },
+            {
+              "value": "66%",
+              "label": "66%"
+            },
+            {
+              "value": "75%",
+              "label": "75%"
+            },
+            {
+              "value": "83%",
+              "label": "83%"
+            },
+            {
+              "value": "100%",
+              "label": "100%"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+{% endschema %} {% endcomment %}
+
+
+
+
+
+{% comment %}
+  Lord of the Rings Inspired Fantasy Footer
+  File: sections/lotr-fantasy-footer.liquid
+  - Animated flies and particles
+  - Mystical fog effects
+  - Glowing runes animation
+  - 4 columns with fantasy styling
+  - Full background animations
+{% endcomment %}
+
+<section
+  id="lotr-footer-{{ section.id }}"
+  class="lotr-footer"
+  style="
+    --lf-bg-start: {{ section.settings.bg_color_start }};
+    --lf-bg-end: {{ section.settings.bg_color_end }};
+    --lf-accent: {{ section.settings.accent_color }};
+    --lf-text: {{ section.settings.text_color }};
+    --lf-text-dim: {{ section.settings.text_dim_color }};
+  "
+>
+  <!-- Animated Background Canvas -->
+  <canvas id="footer-canvas-{{ section.id }}" class="lf-canvas"></canvas>
+  
+  <!-- Fog Layers -->
+  <div class="lf-fog lf-fog-1"></div>
+  <div class="lf-fog lf-fog-2"></div>
+  <div class="lf-fog lf-fog-3"></div>
+
+  <!-- LOTR Elements Container -->
+  <div class="lf-lotr-container" id="flies-{{ section.id }}"></div>
+
+  <!-- Particle Effects -->
+  <div class="lf-particles" id="particles-{{ section.id }}"></div>
+
+  <div class="lf-container">
+    <div class="lf-grid">
+      <!-- Column 1: Logo & Description -->
+      <div class="lf-col lf-col-brand">
+        {% if section.settings.logo %}
+          <div class="lf-logo-wrap">
+            <a href="{{ section.settings.logo_link | default: '/' }}">
+              <img
+                src="{{ section.settings.logo | img_url: 'master' }}"
+                alt="{{ shop.name }}"
+                class="lf-logo"
+              >
+            </a>
+          </div>
+        {% endif %}
+
+        {% if section.settings.description != blank %}
+          <p class="lf-description">{{ section.settings.description }}</p>
+        {% endif %}
+
+        <div class="lf-socials">
+          {% if section.settings.social_facebook != blank %}
+            <a href="{{ section.settings.social_facebook }}" target="_blank" rel="noopener" class="lf-social-link" aria-label="Facebook">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+              </svg>
+            </a>
+          {% endif %}
+          {% if section.settings.social_twitter != blank %}
+            <a href="{{ section.settings.social_twitter }}" target="_blank" rel="noopener" class="lf-social-link" aria-label="Twitter">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+            </a>
+          {% endif %}
+          {% if section.settings.social_linkedin != blank %}
+            <a href="{{ section.settings.social_linkedin }}" target="_blank" rel="noopener" class="lf-social-link" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+              </svg>
+            </a>
+          {% endif %}
+          {% if section.settings.social_instagram != blank %}
+            <a href="{{ section.settings.social_instagram }}" target="_blank" rel="noopener" class="lf-social-link" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/>
+              </svg>
+            </a>
+          {% endif %}
+                    {% if section.settings.social_substack != blank %}
+            <a href="{{ section.settings.social_substack }}" target="_blank" rel="noopener" class="lf-social-link" aria-label="Substack">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/>
+              </svg>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Column 2: Quick Links -->
+      <div class="lf-col lf-col-links">
+        <h3 class="lf-heading">
+          <span class="lf-heading-text">{{ section.settings.links_title }}</span>
+          <span class="lf-heading-glow"></span>
+        </h3>
+        {% if section.settings.links_menu != blank %}
+          {% assign menu = linklists[section.settings.links_menu] %}
+          <ul class="lf-menu">
+            {% for link in menu.links %}
+              <li><a href="{{ link.url }}"><span>{{ link.title }}</span></a></li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+
+      <!-- Column 3: Contact -->
+      <div class="lf-col lf-col-contact">
+        <h3 class="lf-heading">
+          <span class="lf-heading-text">{{ section.settings.contact_title }}</span>
+          <span class="lf-heading-glow"></span>
+        </h3>
+        <div class="lf-contact-list">
+          {% if section.settings.contact_phone != blank %}
+            <a href="tel:{{ section.settings.contact_phone }}" class="lf-contact-item">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+              </svg>
+              <span>{{ section.settings.contact_phone }}</span>
+            </a>
+          {% endif %}
+          {% if section.settings.contact_email != blank %}
+            <a href="mailto:{{ section.settings.contact_email }}" class="lf-contact-item">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+              </svg>
+              <span>{{ section.settings.contact_email }}</span>
+            </a>
+          {% endif %}
+          {% if section.settings.contact_address != blank %}
+            <div class="lf-contact-item">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+              </svg>
+              <span>{{ section.settings.contact_address }}</span>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Column 4: Newsletter -->
+      <div class="lf-col lf-col-newsletter">
+        <h3 class="lf-heading">
+          <span class="lf-heading-text">{{ section.settings.newsletter_title }}</span>
+          <span class="lf-heading-glow"></span>
+        </h3>
+        <p class="lf-newsletter-text">{{ section.settings.newsletter_description }}</p>
+        
+        {% form 'customer', class: 'lf-newsletter-form' %}
+          {% if form.posted_successfully? %}
+            <div class="lf-success-message">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+              </svg>
+              {{ section.settings.newsletter_success }}
+            </div>
+          {% endif %}
+          
+          {% if form.errors %}
+            <div class="lf-error-message">{{ form.errors | default_errors }}</div>
+          {% endif %}
+          
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <div class="lf-input-group">
+            <input
+              type="email"
+              name="contact[email]"
+              placeholder="{{ section.settings.newsletter_placeholder }}"
+              required
+              class="lf-email-input"
+            >
+            <button type="submit" class="lf-submit-btn">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+              </svg>
+            </button>
+          </div>
+        {% endform %}
+      </div>
+    </div>
+
+    <!-- Mystical Divider -->
+    <div class="lf-divider">
+      <div class="lf-divider-line"></div>
+      <div class="lf-divider-gem">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L4 8l8 14 8-14z" fill="var(--lf-accent)"/>
+        </svg>
+      </div>
+      <div class="lf-divider-line"></div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="lf-bottom">
+      <div class="lf-copyright">
+        {{ section.settings.copyright_text }}
+      </div>
+      <div class="lf-bottom-links">
+        {% if section.settings.bottom_menu != blank %}
+          {% assign bottom_menu = linklists[section.settings.bottom_menu] %}
+          <ul>
+            {% for link in bottom_menu.links %}
+              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .lotr-footer {
+      position: relative;
+      background: linear-gradient(180deg, var(--lf-bg-start) 0%, var(--lf-bg-end) 100%);
+      color: var(--lf-text);
+      padding: 50px 20px 12px;
+    font-family: 'Cinzel', serif;
+      overflow: hidden;
+      min-height: 495px;
+    }
+
+    /* Canvas for animated background */
+    .lf-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Fog Layers */
+    .lf-fog {
+      position: absolute;
+      width: 200%;
+      height: 100%;
+      top: 0;
+      left: -100%;
+      background: radial-gradient(ellipse at center, rgba(101, 67, 33, 0.3) 0%, transparent 70%);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .lf-fog-1 {
+      animation: fogMove1 40s ease-in-out infinite;
+      opacity: 0.4;
+    }
+
+    .lf-fog-2 {
+      animation: fogMove2 50s ease-in-out infinite;
+      opacity: 0.3;
+      animation-delay: -15s;
+    }
+
+    .lf-fog-3 {
+      animation: fogMove3 60s ease-in-out infinite;
+      opacity: 0.2;
+      animation-delay: -30s;
+    }
+
+    @keyframes fogMove1 {
+      0%, 100% { transform: translateX(0) translateY(0); }
+      50% { transform: translateX(30%) translateY(-10px); }
+    }
+
+    @keyframes fogMove2 {
+      0%, 100% { transform: translateX(20%) translateY(0); }
+      50% { transform: translateX(-20%) translateY(15px); }
+    }
+
+    @keyframes fogMove3 {
+      0%, 100% { transform: translateX(-10%) translateY(0); }
+      50% { transform: translateX(40%) translateY(-20px); }
+    }
+
+    /* Flies Container */
+    .lf-flies-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    /* Particles Container */
+    .lf-particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .lf-container {
+      max-width: 1600px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 10;
+      padding: 0 2%;
+    }
+
+    .lf-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr 1fr 1.2fr;
+      gap: 60px;
+      margin-bottom: 10px;
+    }
+
+    /* Column 1: Brand */
+    .lf-col-brand .lf-logo {
+      max-width: 180px;
+      height: auto;
+      margin-bottom: 25px;
+      filter: drop-shadow(0 0 10px rgba(218, 165, 32, 0.3));
+      transition: all 0.5s ease;
+    }
+
+    .lf-col-brand .lf-logo:hover {
+      filter: drop-shadow(0 0 20px rgba(218, 165, 32, 0.6));
+      transform: scale(1.05);
+    }
+
+    .lf-description {
+      color: var(--lf-text-dim);
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.8;
+      max-width: 320px;
+    font-family: 'Cinzel', serif;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .lf-socials {
+      display: flex;
+      gap: 15px;
+      margin: 25px 0px;
+    }
+
+    .lf-social-link {
+      width: 45px;
+      height: 45px;
+      border: 2px solid var(--lf-accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.4s ease;
+      background: rgba(0, 0, 0, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .lf-social-link::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: var(--lf-accent);
+      transform: translate(-50%, -50%);
+      transition: all 0.4s ease;
+      z-index: -1;
+    }
+
+    .lf-social-link:hover::before {
+      width: 100%;
+      height: 100%;
+    }
+
+    .lf-social-link:hover {
+      transform: translateY(-5px) scale(1.1);
+      box-shadow: 0 5px 25px rgba(218, 165, 32, 0.5);
+    }
+
+    .lf-social-link svg {
+      width: 20px;
+      height: 20px;
+      fill: var(--lf-accent);
+      transition: all 0.4s ease;
+      position: relative;
+      z-index: 1;
+    }
+
+    .lf-social-link:hover svg {
+      fill: #fff;
+    }
+
+    /* Animated Runes */
+    .lf-runes {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .lf-rune {
+      font-size: 24px;
+      color: var(--lf-accent);
+      opacity: 0.6;
+      animation: runeGlow 3s ease-in-out infinite;
+      text-shadow: 0 0 10px var(--lf-accent);
+    }
+
+    .lf-rune:nth-child(1) { animation-delay: 0s; }
+    .lf-rune:nth-child(2) { animation-delay: 0.6s; }
+    .lf-rune:nth-child(3) { animation-delay: 1.2s; }
+    .lf-rune:nth-child(4) { animation-delay: 1.8s; }
+    .lf-rune:nth-child(5) { animation-delay: 2.4s; }
+
+    @keyframes runeGlow {
+      0%, 100% { opacity: 0.4; text-shadow: 0 0 5px var(--lf-accent); }
+      50% { opacity: 1; text-shadow: 0 0 20px var(--lf-accent), 0 0 30px var(--lf-accent); }
+    }
+
+    /* Headings */
+    .lf-heading {
+      position: relative;
+      margin: 0 0 30px;
+      padding-bottom: 15px;
+    }
+
+    .lf-heading-text {
+      color: var(--lf-text);
+      font-size: 20px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      position: relative;
+      z-index: 1;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+    }
+
+    .lf-heading-glow {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--lf-accent), transparent);
+      animation: glowPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { 
+        opacity: 0.6;
+        box-shadow: 0 0 10px var(--lf-accent);
+      }
+      50% { 
+        opacity: 1;
+        width: 80px;
+        box-shadow: 0 0 20px var(--lf-accent), 0 0 40px var(--lf-accent);
+      }
+    }
+
+    /* Links Menu */
+    .lf-menu {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .lf-menu li {
+      margin-bottom: 14px;
+    }
+
+    .lf-menu a {
+      color: var(--lf-text-dim);
+      text-decoration: none;
+      font-size: 19px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      display: inline-block;
+      position: relative;
+    font-family: 'Cinzel', serif;
+    }
+
+    .lf-menu a {
+    margin: 0 -30px; /* Desktop */
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .lf-menu a {
+        margin: 0 -20px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .lf-menu a {
+        margin: 0 -10px;
+    }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+    .lf-menu a {
+        margin: 0 -5px;
+    }
+}
+
+
+    .lf-menu a span {
+      position: relative;
+      z-index: 1;
+    }
+
+    .lf-menu a::before {
+      content: '⚔';
+      color: var(--lf-accent);
+      margin-right: 10px;
+      opacity: 0;
+      transform: translateX(-15px);
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+
+    .lf-menu a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      width: 0;
+      height: 1px;
+      background: var(--lf-accent);
+      box-shadow: 0 0 8px var(--lf-accent);
+      transition: all 0.3s ease;
+    }
+
+    .lf-menu a:hover {
+      color: var(--lf-accent);
+      padding-left: 5px;
+      text-shadow: 0 0 10px var(--lf-accent);
+    }
+
+    .lf-menu a:hover::before {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .lf-menu a:hover::after {
+      width: 100%;
+    }
+
+    /* Contact */
+    .lf-contact-list {
+      display: flex;
+      flex-direction: column;
+      gap: 19px;
+    }
+
+    .lf-contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      color: var(--lf-text-dim);
+      text-decoration: none;
+      font-size: 19px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    font-family: 'Cinzel', serif;
+      line-height: 1.6;
+    }
+
+    .lf-contact-item:hover {
+      color: var(--lf-accent);
+      transform: translateX(5px);
+      text-shadow: 0 0 10px rgba(218, 165, 32, 0.5);
+    }
+
+    .lf-contact-item svg {
+      width: 22px;
+      height: 22px;
+      fill: var(--lf-accent);
+      flex-shrink: 0;
+      filter: drop-shadow(0 0 5px var(--lf-accent));
+      transition: all 0.3s ease;
+      margin-top: 2px;
+    }
+
+    .lf-contact-item:hover svg {
+      filter: drop-shadow(0 0 15px var(--lf-accent));
+      transform: scale(1.1);
+    }
+
+    /* Newsletter */
+    .lf-newsletter-text {
+      color: var(--lf-text-dim);
+      font-size: 18px;
+      line-height: 1.7;
+      margin: 0 0 25px;
+    font-family: 'Cinzel', serif;
+    }
+
+    .lf-newsletter-form {
+      position: relative;
+    }
+
+    .lf-input-group {
+      display: flex;
+      border: 2px solid rgba(218, 165, 32, 0.4);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: all 0.4s ease;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(10px);
+    }
+
+    .lf-input-group:focus-within {
+      border-color: var(--lf-accent);
+      box-shadow: 0 0 25px rgba(218, 165, 32, 0.4), inset 0 0 15px rgba(218, 165, 32, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .lf-email-input {
+      flex: 1;
+      padding: 14px 18px;
+      background: transparent;
+      border: none;
+      color: var(--lf-text);
+      font-size: 15px;
+      outline: none;
+    font-family: 'Cinzel', serif;
+    }
+
+    .lf-email-input::placeholder {
+      color: rgba(160, 160, 160, 0.6);
+    }
+
+    .lf-submit-btn {
+      padding: 14px 24px;
+      background: var(--lf-accent);
+      border: none;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .lf-submit-btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: all 0.5s ease;
+    }
+
+    .lf-submit-btn:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .lf-submit-btn:hover {
+      background: #c5941c;
+      box-shadow: 0 0 30px rgba(218, 165, 32, 0.6);
+      transform: scale(1.05);
+    }
+
+    .lf-submit-btn svg {
+      width: 22px;
+      height: 22px;
+      fill: #1a0f06;
+      position: relative;
+      z-index: 1;
+      transition: transform 0.3s ease;
+    }
+
+    .lf-submit-btn:hover svg {
+      transform: translateX(5px);
+    }
+
+    .lf-success-message {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px;
+      background: rgba(218, 165, 32, 0.15);
+      border: 2px solid var(--lf-accent);
+      border-radius: 8px;
+      color: var(--lf-accent);
+      font-size: 16px;
+      margin-bottom: 18px;
+      animation: successFade 0.5s ease;
+      box-shadow: 0 0 20px rgba(218, 165, 32, 0.2);
+    }
+
+    @keyframes successFade {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .lf-success-message svg {
+      width: 20px;
+      height: 20px;
+      fill: var(--lf-accent);
+      filter: drop-shadow(0 0 5px var(--lf-accent));
+    }
+
+    .lf-error-message {
+      padding: 14px 16px;
+      background: rgba(139, 0, 0, 0.2);
+      border: 2px solid #8b0000;
+      border-radius: 8px;
+      color: #ff6b6b;
+      font-size: 16px;
+      margin-bottom: 18px;
+    }
+
+    /* Mystical Divider */
+    .lf-divider {
+      display: flex;
+      align-items: center;
+      margin: 12px 0 12px;
+      gap: 20px;
+    }
+
+    .lf-divider-line {
+      flex: 1;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--lf-accent), transparent);
+      box-shadow: 0 0 10px var(--lf-accent);
+      animation: dividerPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes dividerPulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    .lf-divider-gem {
+      width: 40px;
+      height: 40px;
+      animation: gemRotate 10s linear infinite;
+    }
+
+    .lf-divider-gem svg {
+      filter: drop-shadow(0 0 15px var(--lf-accent));
+      animation: gemGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes gemRotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes gemGlow {
+      0%, 100% { filter: drop-shadow(0 0 10px var(--lf-accent)); }
+      50% { filter: drop-shadow(0 0 25px var(--lf-accent)) drop-shadow(0 0 35px var(--lf-accent)); }
+    }
+
+    /* Bottom Bar */
+    .lf-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 25px;
+      padding-top: 30px;
+    }
+
+    .lf-copyright {
+      color: var(--lf-text-dim);
+      font-size: 17px;
+      font-weight: 600;
+    font-family: 'Cinzel', serif;
+      letter-spacing: 0.5px;
+    }
+
+    .lf-bottom-links ul {
+      display: flex;
+      gap: 30px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      flex-wrap: wrap;
+    }
+
+    .lf-bottom-links a {
+      color: var(--lf-text-dim);
+      text-decoration: none;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    font-family: 'Cinzel', serif;
+      position: relative;
+    }
+
+    .lf-bottom-links a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -3px;
+      width: 0;
+      height: 1px;
+      background: var(--lf-accent);
+      box-shadow: 0 0 8px var(--lf-accent);
+      transition: all 0.3s ease;
+    }
+
+    .lf-bottom-links a:hover {
+      color: var(--lf-accent);
+      text-shadow: 0 0 10px rgba(218, 165, 32, 0.5);
+    }
+
+    .lf-bottom-links a:hover::after {
+      width: 100%;
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .lf-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 50px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .lotr-footer {
+        padding: 60px 20px 30px;
+      }
+
+      .lf-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        text-align: center;
+      }
+
+      .lf-col {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .lf-col-brand .lf-logo-wrap {
+        display: flex;
+        justify-content: center;
+      }
+
+      .lf-col-brand .lf-logo {
+        max-width: 170px;
+      }
+
+      .lf-description {
+        max-width: 100%;
+        text-align: center;
+      }
+
+      .lf-socials {
+        justify-content: center;
+      }
+
+      .lf-runes {
+        justify-content: center;
+      }
+
+      .lf-heading {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .lf-heading-glow {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .lf-menu {
+        text-align: center;
+      }
+
+      .lf-menu a::before {
+        display: none;
+      }
+
+      .lf-menu a:hover {
+        padding-left: 0;
+      }
+
+      .lf-contact-list {
+        align-items: center;
+      }
+
+      .lf-contact-item {
+        justify-content: center;
+        text-align: center;
+      }
+
+      .lf-contact-item:hover {
+        transform: translateY(-3px);
+      }
+
+      .lf-newsletter-form {
+        max-width: 100%;
+      }
+
+      .lf-newsletter-text {
+        text-align: center;
+      }
+
+      .lf-bottom {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+      }
+
+      .lf-bottom-links ul {
+        justify-content: center;
+        gap: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .lf-heading-text {
+        font-size: 18px;
+      }
+
+      .lf-socials {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+  </style>
+
+  <script>
+    (function() {
+      const sectionId = '{{ section.id }}';
+      const canvas = document.getElementById('footer-canvas-' + sectionId);
+      const ctx = canvas.getContext('2d');
+      const fliesContainer = document.getElementById('flies-' + sectionId);
+      const particlesContainer = document.getElementById('particles-' + sectionId);
+
+      // Set canvas size
+      function resizeCanvas() {
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+      }
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+
+      // Fireflies/Glowing particles on canvas
+      const fireflies = [];
+      const fireflyCount = 30;
+
+      class Firefly {
+        constructor() {
+          this.reset();
+        }
+
+        reset() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.vx = (Math.random() - 0.5) * 0.5;
+          this.vy = (Math.random() - 0.5) * 0.5;
+          this.radius = Math.random() * 2 + 1;
+          this.opacity = Math.random();
+          this.opacityDirection = Math.random() > 0.5 ? 1 : -1;
+        }
+
+        update() {
+          this.x += this.vx;
+          this.y += this.vy;
+
+          if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+          if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+
+          this.opacity += this.opacityDirection * 0.01;
+          if (this.opacity <= 0 || this.opacity >= 1) {
+            this.opacityDirection *= -1;
+          }
+        }
+
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+          const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius * 3);
+          gradient.addColorStop(0, `rgba(218, 165, 32, ${this.opacity})`);
+          gradient.addColorStop(1, 'rgba(218, 165, 32, 0)');
+          ctx.fillStyle = gradient;
+          ctx.fill();
+        }
+      }
+
+      for (let i = 0; i < fireflyCount; i++) {
+        fireflies.push(new Firefly());
+      }
+
+      function animateFireflies() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        fireflies.forEach(f => {
+          f.update();
+          f.draw();
+        });
+        requestAnimationFrame(animateFireflies);
+      }
+      animateFireflies();
+
+      // Create LOTR Elements (elven stars, rings, swords, crowns)
+      const lotrElements = [];
+      const elementCount = 15;
+      
+      // SVG icons for LOTR elements
+      const createSVG = (type) => {
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('viewBox', '0 0 24 24');
+        svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+        
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        
+        switch(type) {
+          case 'star':
+            path.setAttribute('d', 'M12 2l2.4 7.4h7.6l-6 4.6 2.3 7-6.3-4.6-6.3 4.6 2.3-7-6-4.6h7.6z');
+            break;
+          case 'ring':
+            path.setAttribute('d', 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6z');
+            break;
+          case 'leaf':
+            path.setAttribute('d', 'M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66.08-.22C6.94 18.78 9 14.44 12 12c1.66 1 3.66 1.66 5 2zm-2.71 5.29a1 1 0 0 0-1.41 0l-2.83 2.83-2.83-2.83a1 1 0 1 0-1.41 1.41L9 17.88V21h2v-3.12l2.29-2.29a1 1 0 0 0 0-1.41z');
+            break;
+          case 'feather':
+            path.setAttribute('d', 'M12 2c1.5 0 2.5 1.5 2.5 3.5S13.5 9 12 9s-2.5-1.5-2.5-3.5S10.5 2 12 2m0 2c-.55 0-1 .72-1 1.5S11.45 7 12 7s1-.72 1-1.5S12.55 4 12 4m0 4c1.25 0 2.5 1 2.5 3v7h-2v-3h-1v3h-2v-7c0-2 1.25-3 2.5-3z');
+            break;
+          case 'gem':
+            path.setAttribute('d', 'M12 2L4 8l8 14 8-14z');
+            break;
+        }
+        
+        svg.appendChild(path);
+        return svg;
+      };
+
+      class LotrElement {
+        constructor() {
+          this.element = document.createElement('div');
+          this.element.className = 'lf-lotr-element';
+          
+          const types = ['star', 'ring', 'leaf', 'feather', 'gem'];
+          const type = types[Math.floor(Math.random() * types.length)];
+          const svg = createSVG(type);
+          
+          // Mix of white and gold colors
+          const isWhite = Math.random() > 0.3; // 70% white, 30% gold
+          const color = isWhite ? '#ffffff' : '#daa520';
+          const glowColor = isWhite ? 'rgba(255, 255, 255, 0.3)' : 'rgba(218, 165, 32, 0.4)';
+          
+          this.element.appendChild(svg);
+          this.element.style.cssText = `
+            position: absolute;
+            width: ${Math.random() * 20 + 15}px;
+            height: ${Math.random() * 20 + 15}px;
+            opacity: ${Math.random() * 0.3 + 0.15};
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+          `;
+          
+          svg.style.cssText = `
+            width: 100%;
+            height: 100%;
+            fill: ${color};
+            filter: drop-shadow(0 0 ${Math.random() * 8 + 3}px ${glowColor});
+          `;
+          
+          fliesContainer.appendChild(this.element);
+          this.reset();
+        }
+
+        reset() {
+          this.x = Math.random() * 100;
+          this.y = Math.random() * 100;
+          this.vx = (Math.random() - 0.5) * 0.15;
+          this.vy = (Math.random() - 0.5) * 0.15;
+          this.rotation = Math.random() * 360;
+          this.rotationSpeed = (Math.random() - 0.5) * 1;
+        }
+
+        update() {
+          this.x += this.vx;
+          this.y += this.vy;
+          this.rotation += this.rotationSpeed;
+
+          if (this.x < -5 || this.x > 105) this.vx *= -1;
+          if (this.y < -5 || this.y > 105) this.vy *= -1;
+
+          // Gentle floating motion with occasional direction changes
+          if (Math.random() < 0.02) {
+            this.vx += (Math.random() - 0.5) * 0.03;
+            this.vy += (Math.random() - 0.5) * 0.03;
+          }
+
+          this.element.style.left = this.x + '%';
+          this.element.style.top = this.y + '%';
+          this.element.style.transform = `rotate(${this.rotation}deg)`;
+        }
+      }
+
+      for (let i = 0; i < elementCount; i++) {
+        lotrElements.push(new LotrElement());
+      }
+
+      function animateLotrElements() {
+        lotrElements.forEach(e => e.update());
+        requestAnimationFrame(animateLotrElements);
+      }
+      animateLotrElements();
+
+      // Floating Particles (dust/ash)
+      const particles = [];
+      const particleCount = 50;
+
+      class Particle {
+        constructor() {
+          this.element = document.createElement('div');
+          this.element.style.cssText = `
+            position: absolute;
+            width: ${Math.random() * 3 + 1}px;
+            height: ${Math.random() * 3 + 1}px;
+            background: rgba(218, 165, 32, ${Math.random() * 0.4 + 0.1});
+            border-radius: 50%;
+            pointer-events: none;
+            box-shadow: 0 0 ${Math.random() * 5 + 3}px rgba(218, 165, 32, 0.3);
+          `;
+          particlesContainer.appendChild(this.element);
+          this.reset();
+        }
+
+        reset() {
+          this.x = Math.random() * 100;
+          this.y = 110;
+          this.vy = -(Math.random() * 0.15 + 0.05);
+          this.vx = (Math.random() - 0.5) * 0.1;
+        }
+
+        update() {
+          this.y += this.vy;
+          this.x += this.vx;
+
+          if (this.y < -5) {
+            this.reset();
+          }
+
+          this.element.style.left = this.x + '%';
+          this.element.style.top = this.y + '%';
+        }
+      }
+
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+      }
+
+      function animateParticles() {
+        particles.forEach(p => p.update());
+        requestAnimationFrame(animateParticles);
+      }
+      animateParticles();
+
+    })();
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "LOTR Fantasy Footer",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color_start",
+      "label": "Background Start",
+      "default": "#1a0f06"
+    },
+    {
+      "type": "color",
+      "id": "bg_color_end",
+      "label": "Background End",
+      "default": "#0a0503"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent (Gold)",
+      "default": "#daa520"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#f5e6d3"
+    },
+    {
+      "type": "color",
+      "id": "text_dim_color",
+      "label": "Dimmed Text",
+      "default": "#a08060"
+    },
+    {
+      "type": "header",
+      "content": "Column 1 - Brand"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "url",
+      "id": "logo_link",
+      "label": "Logo Link",
+      "default": "/"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Journey through the realms of Middle-earth with enchanted attire and mystical accessories."
+    },
+    {
+      "type": "text",
+      "id": "social_facebook",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "text",
+      "id": "social_twitter",
+      "label": "Twitter/X URL"
+    },
+    {
+      "type": "text",
+      "id": "social_linkedin",
+      "label": "LinkedIn URL"
+    },
+    {
+      "type": "text",
+      "id": "social_instagram",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "text",
+      "id": "social_substack",
+      "label": "Substack URL"
+    },
+    {
+      "type": "header",
+      "content": "Column 2 - Quick Links"
+    },
+    {
+      "type": "text",
+      "id": "links_title",
+      "label": "Title",
+      "default": "Explore"
+    },
+    {
+      "type": "link_list",
+      "id": "links_menu",
+      "label": "Menu"
+    },
+    {
+      "type": "header",
+      "content": "Column 3 - Contact"
+    },
+    {
+      "type": "text",
+      "id": "contact_title",
+      "label": "Title",
+      "default": "Reach Us"
+    },
+    {
+      "type": "text",
+      "id": "contact_phone",
+      "label": "Phone",
+      "default": "+1 (555) 123-4567"
+    },
+    {
+      "type": "text",
+      "id": "contact_email",
+      "label": "Email",
+      "default": "contact@midnightallure.com"
+    },
+    {
+      "type": "textarea",
+      "id": "contact_address",
+      "label": "Address",
+      "default": "123 Elven Way, Rivendell, Middle-earth"
+    },
+    {
+      "type": "header",
+      "content": "Column 4 - Newsletter"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_title",
+      "label": "Title",
+      "default": "Join Our Quest"
+    },
+    {
+      "type": "textarea",
+      "id": "newsletter_description",
+      "label": "Description",
+      "default": "Subscribe to receive tales of new arrivals and exclusive enchantments."
+    },
+    {
+      "type": "text",
+      "id": "newsletter_placeholder",
+      "label": "Email Placeholder",
+      "default": "Your raven's message..."
+    },
+    {
+      "type": "text",
+      "id": "newsletter_success",
+      "label": "Success Message",
+      "default": "You've joined the fellowship!"
+    },
+    {
+      "type": "header",
+      "content": "Bottom Bar"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright Text",
+      "default": "© 2025 Midnight Allure. All enchantments reserved."
+    },
+    {
+      "type": "link_list",
+      "id": "bottom_menu",
+      "label": "Bottom Menu"
+    }
+  ],
+  "presets": [
+    {
+      "name": "LOTR Fantasy Footer"
+    }
+  ]
+}
+{% endschema %}
