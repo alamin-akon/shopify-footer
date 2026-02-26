@@ -1,0 +1,346 @@
+{% comment %}
+  Section: Kapiva Mobile Accordion (Plus/Minus Icon Images)
+  - Mobile-first design like screenshot
+  - Smooth open/close
+  - Plus/Minus icons from schema (image_picker)
+  - Desktop styled nicely too
+{% endcomment %}
+
+<section class="kpv-acc kpv-acc--{{ section.id }}" data-kpv-acc>
+  <div class="kpv-acc__wrap">
+    {% if section.settings.heading != blank %}
+      <h2 class="kpv-acc__heading">{{ section.settings.heading }}</h2>
+    {% endif %}
+
+    <div class="kpv-acc__list">
+      {% for block in section.blocks %}
+        {% assign is_open = block.settings.default_open %}
+        <div class="kpv-acc__item" {{ block.shopify_attributes }} data-acc-item>
+          <button
+            class="kpv-acc__btn"
+            type="button"
+            data-acc-btn
+            aria-expanded="{% if is_open %}true{% else %}false{% endif %}"
+          >
+            <span class="kpv-acc__title">{{ block.settings.title }}</span>
+            <span class="kpv-acc__icon" aria-hidden="true"></span>
+          </button>
+
+          <div
+            class="kpv-acc__panel"
+            data-acc-panel
+            {% if is_open %}data-open="true"{% endif %}
+          >
+            <div class="kpv-acc__content">
+              {% case block.settings.content_type %}
+                {% when 'specs' %}
+                  {% if block.settings.specs_rows != blank %}
+                    <div class="kpv-acc__specs">
+                      {% assign rows = block.settings.specs_rows | newline_to_br | split: '<br />' %}
+                      {% for row in rows %}
+                        {% assign r = row | strip %}
+                        {% if r == blank %}{% continue %}{% endif %}
+                        {% assign parts = r | split: '|' %}
+                        {% assign k = parts[0] | default: '' | strip %}
+                        {% assign v = parts[1] | default: '' | strip %}
+                        <div class="kpv-acc__specRow">
+                          <div class="kpv-acc__specKey">{{ k }}</div>
+                          <div class="kpv-acc__specVal">{{ v }}</div>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+
+                {% when 'ingredients' %}
+                  {% if block.settings.ingredients_text != blank %}
+                    <div class="kpv-acc__para">{{ block.settings.ingredients_text }}</div>
+                  {% endif %}
+
+                {% else %}
+                  {% if block.settings.body != blank %}
+                    <div class="kpv-acc__rte">
+                      {{ block.settings.body }}
+                    </div>
+                  {% endif %}
+              {% endcase %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <style>
+    .kpv-acc--{{ section.id }}{
+      --bg: {{ section.settings.bg }};
+      --card: {{ section.settings.card_bg }};
+      --text: {{ section.settings.text }};
+      --muted: {{ section.settings.muted }};
+      --accent: {{ section.settings.accent }};
+      --border: rgba(0,0,0,.08);
+      --radius: 16px;
+      --shadow: 0 10px 24px rgba(0,0,0,.08);
+      background: var(--bg);
+      color: var(--text);
+      padding: {{ section.settings.pad_y }}px 0;
+    }
+
+    .kpv-acc__wrap{
+      max-width: {{ section.settings.max_width }}px;
+      margin: 0 auto;
+      padding: 0 {{ section.settings.side_padding }}px;
+    }
+
+    .kpv-acc__heading{
+      margin: 0 0 14px;
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+    }
+
+    .kpv-acc__list{
+      display: grid;
+      gap: 12px;
+    }
+
+    .kpv-acc__item{
+      border-radius: var(--radius);
+      background: var(--card);
+      box-shadow: none;
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,.06);
+    }
+
+    .kpv-acc__btn{
+      width: 100%;
+      border: 0;
+      background: transparent;
+      padding: 16px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      cursor: pointer;
+      text-align: left;
+      font-family: inherit;
+    }
+
+    .kpv-acc__title{
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--text);
+    }
+
+    .kpv-acc__icon{
+      width: 22px;
+      height: 22px;
+      flex: 0 0 auto;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      {% if section.settings.plus_icon != blank %}
+        background-image: url({{ section.settings.plus_icon | image_url: width: 64 }});
+      {% else %}
+        background-image: none;
+      {% endif %}
+      opacity: .9;
+    }
+
+    /* open => minus icon */
+    .kpv-acc__btn[aria-expanded="true"] .kpv-acc__icon{
+      {% if section.settings.minus_icon != blank %}
+        background-image: url({{ section.settings.minus_icon | image_url: width: 64 }});
+      {% endif %}
+    }
+
+    /* Panel smooth */
+    .kpv-acc__panel{
+      height: 0;
+      overflow: hidden;
+      transition: height 260ms ease;
+      border-top: 1px solid rgba(0,0,0,.06);
+    }
+
+    .kpv-acc__content{
+      padding: 14px 16px 16px;
+    }
+
+    .kpv-acc__rte, .kpv-acc__para{
+      font-size: 14px;
+      line-height: 1.65;
+      color: rgba(0,0,0,.68);
+    }
+
+    .kpv-acc__rte p{ margin: 0 0 10px; }
+    .kpv-acc__rte p:last-child{ margin-bottom: 0; }
+
+    /* Specs look like screenshot (green left labels) */
+    .kpv-acc__specs{
+      display: grid;
+      gap: 10px;
+    }
+    .kpv-acc__specRow{
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+    .kpv-acc__specKey{
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1.4;
+    }
+    .kpv-acc__specVal{
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(0,0,0,.70);
+      line-height: 1.5;
+      word-break: break-word;
+    }
+
+    /* Desktop tune */
+    @media (min-width: 991px){
+      .kpv-acc__heading{ font-size: 34px; }
+      .kpv-acc__item{ box-shadow: var(--shadow); border-color: rgba(0,0,0,.07); }
+      .kpv-acc__btn{ padding: 18px 18px; }
+      .kpv-acc__title{ font-size: 20px; }
+      .kpv-acc__content{ padding: 16px 18px 18px; }
+      .kpv-acc__specRow{ grid-template-columns: 180px 1fr; }
+      .kpv-acc__specKey, .kpv-acc__specVal{ font-size: 14px; }
+    }
+  </style>
+
+  <script>
+    (function(){
+      var root = document.querySelector('.kpv-acc--{{ section.id }}[data-kpv-acc]');
+      if(!root) return;
+
+      function setPanelHeight(panel, open){
+        if(!panel) return;
+        if(open){
+          panel.style.height = 'auto';
+          var h = panel.scrollHeight;
+          panel.style.height = '0px';
+          panel.offsetHeight; // reflow
+          panel.style.height = h + 'px';
+          panel.dataset.open = "true";
+          var done = function(){
+            panel.style.height = 'auto';
+            panel.removeEventListener('transitionend', done);
+          };
+          panel.addEventListener('transitionend', done);
+        }else{
+          panel.style.height = panel.scrollHeight + 'px';
+          panel.offsetHeight; // reflow
+          panel.style.height = '0px';
+          delete panel.dataset.open;
+        }
+      }
+
+      // init default_open
+      root.querySelectorAll('[data-acc-item]').forEach(function(item){
+        var btn = item.querySelector('[data-acc-btn]');
+        var panel = item.querySelector('[data-acc-panel]');
+        if(!btn || !panel) return;
+
+        var open = (btn.getAttribute('aria-expanded') === 'true');
+        if(open){
+          panel.style.height = 'auto';
+          panel.dataset.open = "true";
+        }else{
+          panel.style.height = '0px';
+        }
+      });
+
+      root.addEventListener('click', function(e){
+        var btn = e.target.closest('[data-acc-btn]');
+        if(!btn) return;
+
+        var item = btn.closest('[data-acc-item]');
+        var panel = item ? item.querySelector('[data-acc-panel]') : null;
+        if(!panel) return;
+
+        var isOpen = (btn.getAttribute('aria-expanded') === 'true');
+        btn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+        setPanelHeight(panel, !isOpen);
+      });
+
+      // keep height correct on resize for open panels
+      window.addEventListener('resize', function(){
+        root.querySelectorAll('[data-acc-panel][data-open="true"]').forEach(function(panel){
+          panel.style.height = 'auto';
+        });
+      });
+    })();
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "Kapiva Accordion",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Frequently asked questions" },
+
+    { "type": "header", "content": "Icons" },
+    { "type": "image_picker", "id": "plus_icon", "label": "Plus icon image" },
+    { "type": "image_picker", "id": "minus_icon", "label": "Minus icon image" },
+
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "max_width", "min": 320, "max": 1200, "step": 20, "unit": "px", "label": "Max width", "default": 720 },
+    { "type": "range", "id": "side_padding", "min": 0, "max": 30, "step": 2, "unit": "px", "label": "Side padding", "default": 16 },
+    { "type": "range", "id": "pad_y", "min": 0, "max": 80, "step": 5, "unit": "px", "label": "Section padding Y", "default": 20 },
+
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "bg", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "card_bg", "label": "Card background", "default": "#f6f6f6" },
+    { "type": "color", "id": "text", "label": "Text", "default": "#111111" },
+    { "type": "color", "id": "muted", "label": "Muted", "default": "#6b7280" },
+    { "type": "color", "id": "accent", "label": "Accent (left labels)", "default": "#7a943a" }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Accordion item",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "More information" },
+        {
+          "type": "select",
+          "id": "content_type",
+          "label": "Content type",
+          "default": "richtext",
+          "options": [
+            { "value": "richtext", "label": "Rich text" },
+            { "value": "specs", "label": "Specs (Label|Value lines)" },
+            { "value": "ingredients", "label": "Ingredients (plain text)" }
+          ]
+        },
+        { "type": "richtext", "id": "body", "label": "Rich text content", "default": "<p>Add content here.</p>" },
+        {
+          "type": "textarea",
+          "id": "specs_rows",
+          "label": "Specs rows (one per line: Label|Value)",
+          "default": "Product Name|Kapiva Dia Free Juice 1 L\nQuantity|1L\nBest Before|18 months"
+        },
+        {
+          "type": "textarea",
+          "id": "ingredients_text",
+          "label": "Ingredients text",
+          "default": "Each 30ml is prepared from: Amla... Water Q.S."
+        },
+        { "type": "checkbox", "id": "default_open", "label": "Open by default", "default": false }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Kapiva Accordion (Plus/Minus)",
+      "blocks": [
+        { "type": "item" },
+        { "type": "item" }
+      ]
+    }
+  ]
+}
+{% endschema %}
