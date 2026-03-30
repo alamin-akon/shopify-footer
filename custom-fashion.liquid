@@ -1,4 +1,4 @@
-{% comment %}
+{% comment %} {% comment %}
   Theme Section: High Fashion Hero (W.Concept Style)
   Description: Huge typography with parallax scrolling and watermark text.
 {% endcomment %}
@@ -281,10 +281,14 @@
   }
   .icon { cursor: pointer; }
 
+  @media (max-width: 480px) {
+    .fh-headline {
+        font-size: 2.8rem;
+    }
+}
   /* --- RESPONSIVE --- */
   @media (max-width: 900px) {
     .fh-headline {
-      font-size: 3.5rem;
       text-align: center;
     }
     
@@ -451,6 +455,428 @@ document.addEventListener("DOMContentLoaded", function() {
   "presets": [
     {
       "name": "Fashion Editorial Hero"
+    }
+  ]
+}
+{% endschema %} {% endcomment %}
+
+
+
+
+{% comment %}
+  Section: Minimalist Banner with GSAP
+{% endcomment %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+
+<section class="min-banner min-banner--{{ section.id }}">
+  <div class="min-banner__wrapper">
+    
+    <div class="min-banner__bg-text gs-fade-right">
+      {{ section.settings.bg_large_text }}
+    </div>
+
+    <div class="min-banner__left-indicators gs-fade-left">
+      <span class="min-ind">{{ section.settings.ind_1 }}</span>
+      <span class="min-ind">{{ section.settings.ind_2 }}</span>
+    </div>
+
+    <div class="min-banner__main-text">
+      <h1 class="gs-split-text">
+        {{ section.settings.main_title_part_1 }}<br>
+        <span>{{ section.settings.main_title_part_2 }}</span>
+      </h1>
+    </div>
+
+    <div class="min-banner__center-image gs-slide-up">
+      {% if section.settings.main_image != blank %}
+        <img src="{{ section.settings.main_image | image_url: width: 1200 }}" alt="Model" loading="eager">
+      {% else %}
+        <div style="width: 100%; height: 100%; background: #e0e0e0; border-radius: 20px; display: flex; align-items:center; justify-content:center;">Add PNG Model</div>
+      {% endif %}
+    </div>
+
+    <div class="min-banner__left-content gs-fade-up">
+      <h3>{{ section.settings.left_heading }}</h3>
+      <p>{{ section.settings.left_text }}</p>
+      <div class="min-banner__dots">
+        <span class="active"></span><span></span><span></span>
+      </div>
+    </div>
+
+    <div class="min-banner__right-content">
+      
+      <div class="min-banner__small-img gs-fade-down">
+        {% if section.settings.small_image != blank %}
+          <img src="{{ section.settings.small_image | image_url: width: 400 }}" alt="Detail">
+        {% else %}
+          <div style="width:100%; height:100%; background:#f0f0f0;"></div>
+        {% endif %}
+      </div>
+
+      <div class="min-banner__right-text gs-fade-left">
+        <h2>{{ section.settings.right_heading | newline_to_br }}</h2>
+        <p>{{ section.settings.right_subheading }}</p>
+      </div>
+
+      <div class="min-banner__arch-shape gs-scale-up"></div>
+    </div>
+
+    <div class="min-banner__vert-text gs-fade-left">
+      {{ section.settings.vertical_right_text }}
+    </div>
+
+  </div>
+</section>
+
+<style>
+  /* Base Variables & Setup */
+  .min-banner--{{ section.id }} {
+    --green: {{ section.settings.color_green }};
+    --dark: #1a1a1a;
+    --gray: #888888;
+    background-color: #ffffff;
+    width: 100%;
+    overflow: hidden;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  .min-banner__wrapper {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* Full screen height */
+    min-height: 800px;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  /* Large Background Text */
+.min-banner__bg-text {
+    position: absolute;
+    right: 15%;
+    top: -2%;
+    font-size: 10vw;
+    font-weight: 800;
+    color: var(--green);
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    line-height: 0.8;
+    z-index: 1;
+    letter-spacing: -10px;
+}
+
+  /* Center Main Typography */
+  .min-banner__main-text {
+    position: absolute;
+    left: 12%;
+    top: 45%;
+    transform: translateY(-50%);
+    z-index: 2;
+  }
+  .min-banner__main-text h1 {
+    font-size: 9vw;
+    font-weight: 700;
+    color: var(--dark);
+    line-height: 0.9;
+    margin: 0;
+    letter-spacing: -2px;
+  }
+  .min-banner__main-text h1 span {
+    display: inline-block;
+    margin-left: 2.5em; /* Shifts "-ist" to the right */
+  }
+
+  /* Center Model Image (PNG) */
+.min-banner__center-image {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 45%;
+    height: 100%;
+    z-index: 5;
+    display: flex;
+    align-items: flex-end;
+}
+
+  .min-banner__center-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: bottom center;
+  }
+
+  /* Left Side Indicators */
+  .min-banner__left-indicators {
+    position: absolute;
+    left: 4%;
+    top: 25%;
+    display: flex;
+    flex-direction: column;
+    gap: 150px;
+    z-index: 10;
+  }
+  .min-ind {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gray);
+  }
+
+  /* Left Bottom Content */
+  .min-banner__left-content {
+    position: absolute;
+    left: 4%;
+    bottom: 12%;
+    width: 260px;
+    z-index: 10;
+  }
+  .min-banner__left-content h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 12px;
+  }
+  .min-banner__left-content p {
+    font-size: 12px;
+    color: #999;
+    line-height: 1.6;
+    margin: 0;
+  }
+  .min-banner__dots {
+    display: flex;
+    gap: 6px;
+    margin-top: 24px;
+  }
+  .min-banner__dots span {
+    width: 4px;
+    height: 4px;
+    background: #ccc;
+    border-radius: 50%;
+  }
+  .min-banner__dots span.active {
+    background: var(--dark);
+  }
+
+  /* Right Small Image */
+  .min-banner__small-img {
+    position: absolute;
+    right: 18%;
+    top: 45%;
+    width: 220px;
+    height: 140px;
+    z-index: 10;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  }
+  .min-banner__small-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Right Bottom Text */
+  .min-banner__right-text {
+    position: absolute;
+    right: 22%;
+    bottom: 16%;
+    z-index: 10;
+  }
+  .min-banner__right-text h2 {
+    font-size: 38px;
+    font-weight: 700;
+    color: var(--dark);
+    line-height: 1.1;
+    margin: 0 0 8px;
+    letter-spacing: -1px;
+  }
+  .min-banner__right-text p {
+    font-size: 15px;
+    color: #555;
+    margin: 0;
+  }
+
+  /* Green Arch Shape */
+  .min-banner__arch-shape {
+    position: absolute;
+    right: 14%;
+    bottom: 10%;
+    width: 50px;
+    height: 25px;
+    border: 18px solid var(--green);
+    border-bottom: 0;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+    box-sizing: content-box;
+    z-index: 10;
+  }
+
+  /* Vertical Right Text */
+  .min-banner__vert-text {
+    position: absolute;
+    right: 2%;
+    top: 30%;
+    writing-mode: vertical-rl;
+    font-size: 11px;
+    color: #a0a0a0;
+    letter-spacing: 1px;
+    z-index: 10;
+  }
+
+  /* Responsive Adjustments (Stacked for Mobile) */
+  @media (max-width: 1024px) {
+    .min-banner__bg-text { font-size: 35vw; right: 5%; }
+    .min-banner__main-text h1 { font-size: 12vw; }
+    .min-banner__center-image { width: 60%; }
+    .min-banner__small-img { width: 160px; height: 100px; right: 10%; }
+    .min-banner__right-text { right: 10%; }
+  }
+
+  @media (max-width: 768px) {
+    .min-banner__wrapper { height: auto; min-height: 100vh; overflow-y: auto; padding-bottom: 50px; }
+    .min-banner__bg-text { top: 10%; font-size: 50vw; opacity: 0.3; }
+    .min-banner__main-text { position: relative; top: 100px; left: 0; text-align: center; transform: none; width: 100%; margin-bottom: 40px; }
+    .min-banner__main-text h1 { font-size: 18vw; }
+    .min-banner__main-text h1 span { margin-left: 0; display: block; }
+    
+    .min-banner__center-image { position: relative; width: 90%; height: 400px; transform: none; left: 0; margin: 0 auto; z-index: 5; }
+    
+    .min-banner__left-indicators, .min-banner__vert-text { display: none; } /* Hide extra desktop decor on mobile */
+    
+    .min-banner__left-content { position: relative; left: 0; bottom: 0; width: 90%; margin: 30px auto 0; text-align: center; }
+    .min-banner__dots { justify-content: center; }
+    
+    .min-banner__right-content { display: flex; flex-direction: column; align-items: center; margin-top: 40px; position: relative; }
+    .min-banner__small-img { position: relative; right: 0; top: 0; margin-bottom: 20px; }
+    .min-banner__right-text { position: relative; right: 0; bottom: 0; text-align: center; }
+    .min-banner__arch-shape { position: relative; right: 0; bottom: 0; margin-top: 20px; }
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", (event) => {
+    // Wait for GSAP to load
+    let checkGSAP = setInterval(() => {
+      if (window.gsap) {
+        clearInterval(checkGSAP);
+        initBannerAnimation();
+      }
+    }, 100);
+
+    function initBannerAnimation() {
+      const tl = gsap.timeline({ defaults: { ease: "power3.out", duration: 1.2 } });
+
+      // 1. Background text comes in
+      tl.from(".gs-fade-right", { x: 100, opacity: 0, duration: 1.5 })
+      
+      // 2. Main Title staggers up
+      .from(".gs-split-text", { y: 50, opacity: 0, stagger: 0.2 }, "-=1")
+      
+      // 3. Center Image slides up smoothly
+      .from(".gs-slide-up", { y: 120, opacity: 0, duration: 1.5 }, "-=0.8")
+      
+      // 4. Left side indicators & text
+      .from(".gs-fade-left", { x: -40, opacity: 0, stagger: 0.15 }, "-=1")
+      .from(".gs-fade-up", { y: 30, opacity: 0 }, "-=1")
+      
+      // 5. Right side elements
+      .from(".gs-fade-down", { y: -30, opacity: 0 }, "-=1")
+      .from(".gs-scale-up", { scale: 0.5, opacity: 0, duration: 1, ease: "back.out(1.7)" }, "-=0.8");
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Minimalist Banner",
+  "settings": [
+    {
+      "type": "color",
+      "id": "color_green",
+      "label": "Theme Green Color",
+      "default": "#577b54"
+    },
+    {
+      "type": "text",
+      "id": "bg_large_text",
+      "label": "Background Large Text",
+      "default": "202"
+    },
+    {
+      "type": "image_picker",
+      "id": "main_image",
+      "label": "Main Center Image (PNG)"
+    },
+    {
+      "type": "text",
+      "id": "main_title_part_1",
+      "label": "Main Title (Top Line)",
+      "default": "Minimal"
+    },
+    {
+      "type": "text",
+      "id": "main_title_part_2",
+      "label": "Main Title (Bottom Line)",
+      "default": "-ist"
+    },
+    {
+      "type": "header",
+      "content": "Left Content"
+    },
+    {
+      "type": "text",
+      "id": "ind_1",
+      "label": "Indicator 1",
+      "default": "01"
+    },
+    {
+      "type": "text",
+      "id": "ind_2",
+      "label": "Indicator 2",
+      "default": "2020"
+    },
+    {
+      "type": "text",
+      "id": "left_heading",
+      "label": "Left Heading",
+      "default": "Living with less"
+    },
+    {
+      "type": "textarea",
+      "id": "left_text",
+      "label": "Left Text",
+      "default": "Act Minimalist fashion is defined by one major principle: keep it simple! Streamlined shapes, a small selection of colors..."
+    },
+    {
+      "type": "header",
+      "content": "Right Content"
+    },
+    {
+      "type": "image_picker",
+      "id": "small_image",
+      "label": "Right Small Image"
+    },
+    {
+      "type": "text",
+      "id": "right_heading",
+      "label": "Right Heading",
+      "default": "Fashion\nculture",
+      "info": "Use Enter for a line break"
+    },
+    {
+      "type": "text",
+      "id": "right_subheading",
+      "label": "Right Subheading",
+      "default": "Get back to basics"
+    },
+    {
+      "type": "text",
+      "id": "vertical_right_text",
+      "label": "Vertical Edge Text",
+      "default": "Simplicity is the key to pinpointing this style."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Minimalist Banner GSAP"
     }
   ]
 }
